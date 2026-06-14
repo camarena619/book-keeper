@@ -1,10 +1,39 @@
-import { ComingSoon } from "@/components/layout/ComingSoon";
+import { createClient } from "@/lib/supabase/server";
+import { getActiveOrg } from "@/lib/org";
+import { decrypt } from "@/lib/crypto";
+import { SettingsView } from "@/components/settings/SettingsView";
 
-export default function SettingsPage() {
-  return (
-    <ComingSoon
-      title="Settings"
-      note="Organization details, ACH info (server-side encrypted), team & roles, MFA, sessions, and audit log. Next: port settings with bank numbers encrypted via lib/crypto.ts on the server."
-    />
-  );
+/**
+ * Decrypt a stored bank field server-side. Returns "" if decryption fails —
+ * e.g. legacy ciphertext encrypted with a different key/format. If the stored
+ * value is plain digits (pre-encryption data), surface it as-is.
+ */
+function safeDecrypt(value: string | null): string {
+  if (!value) return "";
+  try {
+    return decrypt(value);
+  } catch {
+    return /^\d{4,17}$/.test(value) ? value : "";
+  }
+}
+
+export default async function SettingsPage() {
+  const supabase = await createClient();
+  const activeOrg = await getActiveOrg();
+  if (!activeOrg) return null;
+
+  const { data: orgRow } = await supabase
+    .from("organizations")
+    .select("name, billing_email, routing_number, account_number")
+    .eq("id", activeOrg.id)
+    .single();
+
+  const initial = {
+    name: orgRow?.name ?? activeOrg.name,
+    billing_email: orgRow?.billing_email ?? "",
+    routing_number: safeDecrypt(orgRow?.routing_number ?? null),
+    account_number: safeDecrypt(orgRow?.account_number ?? null),
+  };
+
+  return <SettingsView initial={initial} isOwner={activeOrg.role === "owner"} />;
 }

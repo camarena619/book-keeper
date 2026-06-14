@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Next.js
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -23,5 +29,10 @@ dist-ssr
 *.sln
 *.sw?
 
-# local env files
-.env*.local
+# env files — ignore ALL real env files, but keep the example committed
+.env
+.env.*
+!.env.example
+
+# Supabase temp cache
+supabase/.temp/

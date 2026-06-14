@@ -1,4 +1,29 @@
 -- ==========================================
+-- 0. CLEAN SLATE FOR CONFLICTING TABLES
+-- ==========================================
+DROP VIEW IF EXISTS public.operational_ledger CASCADE;
+DROP VIEW IF EXISTS public.invoice_ledger CASCADE;
+DROP VIEW IF EXISTS public.quote_ledger CASCADE;
+
+DROP FUNCTION IF EXISTS public.auto_categorize_bank_transaction() CASCADE;
+DROP FUNCTION IF EXISTS public.convert_quote_to_invoice(UUID, INTEGER) CASCADE;
+DROP FUNCTION IF EXISTS public.is_org_member(UUID) CASCADE;
+
+DROP TABLE IF EXISTS public.expenses CASCADE;
+DROP TABLE IF EXISTS public.suppliers CASCADE;
+DROP TABLE IF EXISTS public.expense_rules CASCADE;
+DROP TABLE IF EXISTS public.bank_transactions CASCADE;
+DROP TABLE IF EXISTS public.bank_accounts CASCADE;
+DROP TABLE IF EXISTS public.invoice_items CASCADE;
+DROP TABLE IF EXISTS public.invoices CASCADE;
+DROP TABLE IF EXISTS public.quote_items CASCADE;
+DROP TABLE IF EXISTS public.quotes CASCADE;
+DROP TABLE IF EXISTS public.clients CASCADE;
+DROP TABLE IF EXISTS public.organization_members CASCADE;
+DROP TABLE IF EXISTS public.organizations CASCADE;
+DROP TABLE IF EXISTS public.profiles CASCADE;
+
+-- ==========================================
 -- 1. BASE DATABASE TABLES
 -- ==========================================
 
@@ -376,6 +401,34 @@ CREATE OR REPLACE TRIGGER tr_auto_categorize_bank_transaction
   AFTER INSERT ON public.bank_transactions
   FOR EACH ROW
   EXECUTE FUNCTION public.auto_categorize_bank_transaction();
+
+-- Auto-provision Profile, default Organization, and Owner Member on auth signup
+CREATE OR REPLACE FUNCTION public.handle_new_user_signup()
+RETURNS TRIGGER AS $$
+DECLARE
+  new_org_id UUID;
+BEGIN
+  -- 1. Create public profile
+  INSERT INTO public.profiles (id, email, updated_at)
+  VALUES (NEW.id, NEW.email, NOW());
+
+  -- 2. Create a default business organization
+  INSERT INTO public.organizations (name, billing_email)
+  VALUES ('My Business LLC', NEW.email)
+  RETURNING id INTO new_org_id;
+
+  -- 3. Designate the new user as owner of the organization
+  INSERT INTO public.organization_members (organization_id, user_id, role)
+  VALUES (new_org_id, NEW.id, 'owner');
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE TRIGGER tr_handle_new_user_signup
+  AFTER INSERT ON auth.users
+  FOR EACH ROW
+  EXECUTE FUNCTION public.handle_new_user_signup();
 
 -- ==========================================
 -- 4. ROW LEVEL SECURITY (RLS) POLICIES

@@ -1,73 +1,68 @@
-# React + TypeScript + Vite
+# LedgerLLC — AI-Powered Bookkeeping & Invoicing
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Multi-tenant bookkeeping & invoicing platform for small-business LLCs
+(QuickBooks/Xero-style). Built on Next.js 15 App Router + Supabase.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| Layer | Choice |
+|-------|--------|
+| Framework | Next.js 15 (App Router, RSC, Server Actions) |
+| Database / Auth | Supabase (Postgres + Auth + RLS) |
+| Styling | Tailwind CSS |
+| Forms / Validation | React Hook Form + Zod |
+| PDF | @react-pdf/renderer |
+| Icons | lucide-react |
 
-## React Compiler
+## Getting started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+# 1. Install deps
+npm install
 
-## Expanding the ESLint configuration
+# 2. Configure env
+cp .env.example .env      # then fill in your Supabase values
+#    NEXT_PUBLIC_*  -> safe for the browser (protected by RLS)
+#    ENCRYPTION_KEY -> server-only; generate with: openssl rand -hex 32
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+# 3. Apply database migrations
+npm run supabase:db:push
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# 4. Run
+npm run dev               # http://localhost:3000
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Project layout
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+app/
+  (auth)/         login, signup
+  (dashboard)/    protected app (layout = sidebar + org switcher + header)
+    actions.ts    server actions (org create/switch, sign out)
+components/
+  auth/  layout/  ...
+lib/
+  supabase/       browser + server + middleware clients (@supabase/ssr)
+  crypto.ts       server-only AES-256-GCM (bank details / Plaid tokens)
+  org.ts          active-organization resolution
+middleware.ts     auth route protection (/dashboard -> /login)
+supabase/
+  migrations/     schema, RLS, double-entry ledger, audit log
+  functions/      edge functions (net30 overdue reminder)
+legacy/           previous Vite SPA, kept for reference while porting
+```
+
+## Security notes
+
+- Secrets never ship to the browser: only `NEXT_PUBLIC_`-prefixed vars are
+  bundled client-side. Bank-detail encryption runs server-side in `lib/crypto.ts`
+  (guarded by `import "server-only"`).
+- All data access is constrained by Supabase Row Level Security; granular
+  per-operation RBAC policies live in the migrations.
+- Security headers (CSP, HSTS, X-Frame-Options, etc.) are set in `next.config.mjs`.
+
+## Status
+
+Foundation complete: auth, multi-org, route protection, dashboard overview.
+Screens being ported from `legacy/`: contacts, invoices (+ PDF), expenses,
+banking (Plaid), general ledger, settings. See the migration plan in chat.

@@ -1,6 +1,33 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+// ---------------------------------------------------------------------------
+// CORS — origin allow-list (replaces wildcard '*')
+// ---------------------------------------------------------------------------
+const ALLOWED_ORIGINS = [
+  "https://bookkeeper.yourdomain.com",
+  "http://localhost:5173",
+];
+
+/**
+ * Resolve a safe Access-Control-Allow-Origin value.
+ * Reflects the request origin only when it is in the allow-list;
+ * otherwise falls back to the first allowed origin.
+ */
+function resolveOrigin(req: Request): string {
+  const origin = req.headers.get("Origin") ?? "";
+  return ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+}
+
+/** Build CORS headers scoped to the current request origin. */
+function corsHeaders(req: Request): Record<string, string> {
+  return {
+    "Access-Control-Allow-Origin": resolveOrigin(req),
+    "Access-Control-Allow-Headers":
+      "authorization, x-client-info, apikey, content-type",
+  };
+}
+
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
@@ -8,12 +35,7 @@ const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 serve(async (req) => {
   // Allow OPTIONS preflight request
   if (req.method === 'OPTIONS') {
-    return new Response('ok', {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-      }
-    });
+    return new Response('ok', { headers: corsHeaders(req) });
   }
 
   // 1. Enforce auth check or token validation to prevent unauthorized execution
@@ -21,14 +43,14 @@ serve(async (req) => {
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return new Response(JSON.stringify({ error: 'Unauthorized request token' }), { 
       status: 401,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+      headers: { 'Content-Type': 'application/json', ...corsHeaders(req) }
     });
   }
 
   if (!RESEND_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     return new Response(JSON.stringify({ error: "Missing config keys in environment variables" }), { 
       status: 500,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+      headers: { 'Content-Type': 'application/json', ...corsHeaders(req) }
     });
   }
 
@@ -47,7 +69,7 @@ serve(async (req) => {
     if (!overdueInvoices || overdueInvoices.length === 0) {
       return new Response(JSON.stringify({ message: "No overdue invoices found." }), { 
         status: 200,
-        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+        headers: { 'Content-Type': 'application/json', ...corsHeaders(req) }
       });
     }
 
@@ -55,14 +77,18 @@ serve(async (req) => {
 
     // 4. Loop through and send notifications
     for (const invoice of overdueInvoices) {
-      // Fetch LLC owner profile to get business name & bank details for email
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("business_name, email")
-        .eq("id", invoice.user_id)
+      // Fetch the issuing organization for business name + billing email.
+      // invoice_ledger exposes organization_id (NOT user_id), and the business
+      // name/email live on organizations (NOT profiles).
+      const { data: org } = await supabase
+        .from("organizations")
+        .select("name, billing_email")
+        .eq("id", invoice.organization_id)
         .single();
 
-      if (!profile || !invoice.client_email) continue;
+      if (!org || !invoice.client_email) continue;
+
+      const profile = { business_name: org.name, email: org.billing_email };
 
       const formattedTotal = (invoice.grand_total_cents / 100).toFixed(2);
       const emailBody = `
@@ -126,12 +152,12 @@ serve(async (req) => {
 
     return new Response(JSON.stringify({ success: true, emailed: processedEmails }), { 
       status: 200,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+      headers: { 'Content-Type': 'application/json', ...corsHeaders(req) }
     });
   } catch (err: any) {
     return new Response(JSON.stringify({ error: err.message }), { 
       status: 500,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+      headers: { 'Content-Type': 'application/json', ...corsHeaders(req) }
     });
   }
 });

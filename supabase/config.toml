@@ -1,0 +1,4 @@
+# Minimal Supabase CLI config. The remote project is identified by
+# supabase/.temp (project ref jqkywzsfetieetokkiyj) for --linked commands.
+# Run `supabase init --force` if you want the CLI to regenerate the full file.
+project_id = "ledgerllc"

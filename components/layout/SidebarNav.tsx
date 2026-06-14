@@ -9,6 +9,7 @@ import {
   Receipt,
   Wallet,
   BookOpen,
+  BarChart3,
   Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -20,6 +21,7 @@ const NAV = [
   { href: "/dashboard/expenses", label: "Expenses", icon: Receipt },
   { href: "/dashboard/banking", label: "Banking", icon: Wallet },
   { href: "/dashboard/ledger", label: "General Ledger", icon: BookOpen },
+  { href: "/dashboard/reports", label: "Reports", icon: BarChart3 },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 

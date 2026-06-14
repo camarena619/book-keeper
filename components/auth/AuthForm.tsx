@@ -27,7 +27,16 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // MFA challenge step (shown after password login when a TOTP factor exists)
+  const [mfaRequired, setMfaRequired] = useState(false);
+  const [mfaCode, setMfaCode] = useState("");
+
   const isSignup = mode === "signup";
+
+  function goToDashboard() {
+    router.push("/dashboard");
+    router.refresh();
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -41,15 +50,20 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         setNotice(
           "Account created. Check your inbox to confirm your email, then sign in.",
         );
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) throw error;
-        router.push("/dashboard");
-        router.refresh();
+        return;
       }
+
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+
+      // Step-up: if the user has a verified TOTP factor, require AAL2.
+      const { data: aal } =
+        await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+      if (aal?.nextLevel === "aal2" && aal.currentLevel === "aal1") {
+        setMfaRequired(true);
+        return;
+      }
+      goToDashboard();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Authentication failed.");
     } finally {
@@ -57,6 +71,93 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
     }
   }
 
+  async function handleMfaVerify(e: React.FormEvent) {
+    e.preventDefault();
+    if (mfaCode.length !== 6) return;
+    setError("");
+    setLoading(true);
+    try {
+      const { data: factors, error: fErr } = await supabase.auth.mfa.listFactors();
+      if (fErr) throw fErr;
+      const totp = factors?.totp?.find((f) => f.status === "verified");
+      if (!totp) throw new Error("No verified authenticator found.");
+
+      const { data: challenge, error: cErr } = await supabase.auth.mfa.challenge({
+        factorId: totp.id,
+      });
+      if (cErr) throw cErr;
+
+      const { error: vErr } = await supabase.auth.mfa.verify({
+        factorId: totp.id,
+        challengeId: challenge.id,
+        code: mfaCode,
+      });
+      if (vErr) throw vErr;
+
+      goToDashboard();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Invalid code.");
+      setMfaCode("");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function cancelMfa() {
+    // Don't leave the user in a half-authenticated AAL1 session.
+    await supabase.auth.signOut();
+    setMfaRequired(false);
+    setMfaCode("");
+    setPassword("");
+    setError("");
+  }
+
+  // ---- MFA challenge screen ----
+  if (mfaRequired) {
+    return (
+      <div className="w-full max-w-sm">
+        <div className="mb-6 text-center">
+          <div className="text-2xl font-bold">Two-Factor Verification</div>
+          <p className="mt-1 text-sm text-slate-500">
+            Enter the 6-digit code from your authenticator app.
+          </p>
+        </div>
+        {error && (
+          <div className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+            {error}
+          </div>
+        )}
+        <form onSubmit={handleMfaVerify} className="flex flex-col gap-4">
+          <input
+            inputMode="numeric"
+            maxLength={6}
+            placeholder="000000"
+            className="input text-center font-mono text-lg tracking-[0.4em]"
+            value={mfaCode}
+            onChange={(e) => setMfaCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+            autoFocus
+            autoComplete="one-time-code"
+          />
+          <button
+            type="submit"
+            className="btn-primary w-full"
+            disabled={loading || mfaCode.length !== 6}
+          >
+            {loading ? "Verifying…" : "Verify & continue"}
+          </button>
+          <button
+            type="button"
+            className="text-sm text-slate-500 hover:text-slate-700"
+            onClick={cancelMfa}
+          >
+            Cancel
+          </button>
+        </form>
+      </div>
+    );
+  }
+
+  // ---- Login / signup screen ----
   const strength = passwordStrength(password);
 
   return (

@@ -57,18 +57,18 @@ body {
 
 /* Sidebar styling */
 .sidebar {
-  width: 260px;
+  width: 280px;
   background-color: rgba(10, 11, 18, 0.95);
   border-right: 1px solid var(--border-color);
   padding: 30px 20px;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 25px;
   backdrop-filter: blur(10px);
 }
 
 .brand {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 800;
   letter-spacing: -0.5px;
   color: var(--text-primary);
@@ -79,6 +79,37 @@ body {
 
 .brand-accent {
   color: var(--color-primary);
+}
+
+/* Organization Selector Dropdown */
+.org-switcher {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.org-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.org-select-control {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+}
+
+.org-select-control:focus {
+  border-color: var(--color-primary);
 }
 
 .sidebar-menu {
@@ -252,6 +283,7 @@ body {
 .badge-paid { background-color: rgba(16, 185, 129, 0.15); color: #34d399; }
 .badge-overdue { background-color: rgba(239, 68, 68, 0.15); color: #f87171; }
 .badge-converted { background-color: rgba(168, 85, 247, 0.15); color: #c084fc; }
+.badge-review { background-color: rgba(245, 158, 11, 0.15); color: #fbbf24; }
 
 /* Buttons */
 .btn {
@@ -297,6 +329,15 @@ body {
   background-color: #059669;
 }
 
+.btn-danger {
+  background-color: var(--color-danger);
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background-color: #dc2626;
+}
+
 /* Forms layout */
 .form-grid {
   display: grid;
@@ -337,19 +378,94 @@ body {
   border-color: var(--color-primary);
 }
 
-/* Items Dynamic Array Input Builder */
-.line-items-builder {
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  margin-top: 25px;
-  padding-top: 20px;
+/* Auth Screens */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
 }
 
-.line-item-row {
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 40px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.auth-logo {
+  font-size: 28px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+/* PWA Offline indicator */
+.offline-banner {
+  background-color: var(--color-warning);
+  color: #000000;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  padding: 6px 0;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Plaid Account Cards */
+.plaid-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr auto;
-  gap: 12px;
-  align-items: flex-end;
-  margin-bottom: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.bank-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.8) 100%);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.bank-card:hover {
+  border-color: rgba(14, 165, 233, 0.4);
+}
+
+.bank-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.bank-type {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.bank-balance {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 15px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* AI Review Queue styling */
+.review-panel {
+  border: 1px dashed rgba(245, 158, 11, 0.3);
+  background-color: rgba(245, 158, 11, 0.02);
+  margin-bottom: 30px;
 }
 
 /* Monospace fonts for numbers to keep columns aligned */

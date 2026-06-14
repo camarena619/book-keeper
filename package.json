@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "supabase:init": "supabase init",
+    "supabase:link": "supabase link",
+    "supabase:db:push": "supabase db push",
+    "supabase:functions:deploy": "supabase functions deploy net30-reminder"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.5.1",
@@ -28,6 +32,7 @@
     "globals": "^17.6.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
-    "vite": "^8.0.12"
+    "vite": "^8.0.12",
+    "vite-plugin-pwa": "^1.3.0"
   }
 }

@@ -41,11 +41,6 @@ export function SettingsView({
 
   return (
     <div className="flex max-w-2xl flex-col gap-6">
-      <header>
-        <h1 className="text-2xl font-bold">Settings</h1>
-        <p className="text-sm text-slate-500">Organization &amp; banking details</p>
-      </header>
-
       <div className="flex items-start gap-2 rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-xs text-sky-800">
         <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" />
         <span>

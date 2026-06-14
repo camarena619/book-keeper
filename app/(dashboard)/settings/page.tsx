@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { getActiveOrg } from "@/lib/org";
 import { decrypt } from "@/lib/crypto";
-import { SettingsView } from "@/components/settings/SettingsView";
+import { SettingsTabs } from "@/components/settings/SettingsTabs";
 
 /**
  * Decrypt a stored bank field server-side. Returns "" if decryption fails —
@@ -22,6 +22,10 @@ export default async function SettingsPage() {
   const activeOrg = await getActiveOrg();
   if (!activeOrg) return null;
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   const { data: orgRow } = await supabase
     .from("organizations")
     .select("name, billing_email, routing_number, account_number")
@@ -35,5 +39,12 @@ export default async function SettingsPage() {
     account_number: safeDecrypt(orgRow?.account_number ?? null),
   };
 
-  return <SettingsView initial={initial} isOwner={activeOrg.role === "owner"} />;
+  return (
+    <SettingsTabs
+      initial={initial}
+      isOwner={activeOrg.role === "owner"}
+      role={activeOrg.role}
+      userEmail={user?.email ?? ""}
+    />
+  );
 }

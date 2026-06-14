@@ -5,6 +5,7 @@ import { OrgSwitcher } from "@/components/layout/OrgSwitcher";
 import { SidebarNav } from "@/components/layout/SidebarNav";
 import { SignOutButton } from "@/components/layout/SignOutButton";
 import { CreateFirstOrg } from "@/components/layout/CreateFirstOrg";
+import { SessionRegistrar } from "@/components/settings/SessionRegistrar";
 
 export default async function DashboardLayout({
   children,
@@ -34,6 +35,7 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex min-h-screen">
+      <SessionRegistrar />
       <aside className="flex w-64 flex-col border-r border-slate-200 bg-white">
         <div className="px-5 py-5 text-xl font-bold">
           <span className="text-brand">Ledger</span>LLC

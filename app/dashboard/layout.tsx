@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { getCurrentUser } from "@/lib/auth";
 import { getUserOrgs, getActiveOrg } from "@/lib/org";
 import { OrgSwitcher } from "@/components/layout/OrgSwitcher";
 import { SidebarNav } from "@/components/layout/SidebarNav";
@@ -13,10 +13,7 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   // Middleware already guards this, but re-check for type-safety + defense.
   if (!user) redirect("/login");

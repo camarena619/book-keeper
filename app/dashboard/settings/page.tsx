@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { getActiveOrg } from "@/lib/org";
+import { getCurrentUser } from "@/lib/auth";
 import { decrypt } from "@/lib/crypto";
 import { SettingsTabs } from "@/components/settings/SettingsTabs";
 
@@ -22,9 +23,7 @@ export default async function SettingsPage() {
   const activeOrg = await getActiveOrg();
   if (!activeOrg) return null;
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   const { data: orgRow } = await supabase
     .from("organizations")

@@ -6,6 +6,7 @@ import { SidebarNav } from "@/components/layout/SidebarNav";
 import { SignOutButton } from "@/components/layout/SignOutButton";
 import { CreateFirstOrg } from "@/components/layout/CreateFirstOrg";
 import { SessionRegistrar } from "@/components/settings/SessionRegistrar";
+import { MobileTopBar } from "@/components/layout/MobileTopBar";
 
 export default async function DashboardLayout({
   children,
@@ -36,7 +37,9 @@ export default async function DashboardLayout({
   return (
     <div className="flex min-h-screen">
       <SessionRegistrar />
-      <aside className="flex w-64 flex-col border-r border-slate-200 bg-white">
+
+      {/* Desktop sidebar — hidden on mobile */}
+      <aside className="hidden w-64 flex-col border-r border-slate-200 bg-white md:flex">
         <div className="px-5 py-5 text-xl font-bold">
           <span className="text-brand">Ledger</span>LLC
         </div>
@@ -52,9 +55,19 @@ export default async function DashboardLayout({
         </div>
       </aside>
 
-      <main className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-7xl px-8 py-8">{children}</div>
-      </main>
+      {/* Right column: mobile top bar (mobile only) + main content */}
+      <div className="flex min-w-0 flex-1 flex-col">
+        <MobileTopBar
+          orgs={orgs}
+          activeId={activeOrg.id}
+          userEmail={user.email ?? ""}
+        />
+        <main className="flex-1 overflow-y-auto">
+          <div className="mx-auto max-w-7xl px-4 py-6 md:px-8 md:py-8">
+            {children}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

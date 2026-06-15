@@ -36,9 +36,13 @@ export async function updateSession(request: NextRequest) {
   );
 
   // IMPORTANT: do not run code between createServerClient and getUser().
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch (err) {
+    console.error("Supabase auth check failed in middleware:", err);
+  }
 
   const { pathname } = request.nextUrl;
   const isProtected = pathname.startsWith("/dashboard");

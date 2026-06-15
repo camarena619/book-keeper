@@ -16,7 +16,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable}>
-      <body>{children}</body>
+      {/* suppressHydrationWarning: browser extensions (e.g. Grammarly) inject
+          attributes onto <body> before React hydrates — this ignores that
+          benign mismatch without masking real hydration bugs deeper in the tree. */}
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }

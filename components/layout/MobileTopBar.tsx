@@ -33,7 +33,7 @@ export function MobileTopBar({
     <>
       <div className="sticky top-0 z-30 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 md:hidden">
         <div className="text-lg font-bold">
-          <span className="text-brand">Ledger</span>LLC
+          <span className="text-brand">Nexus</span> Ledger
         </div>
         <button
           onClick={() => setOpen(true)}
@@ -54,7 +54,7 @@ export function MobileTopBar({
           <aside className="absolute left-0 top-0 flex h-full w-64 flex-col bg-white shadow-xl">
             <div className="flex items-center justify-between px-5 py-4">
               <div className="text-xl font-bold">
-                <span className="text-brand">Ledger</span>LLC
+                <span className="text-brand">Nexus</span> Ledger
               </div>
               <button
                 onClick={() => setOpen(false)}

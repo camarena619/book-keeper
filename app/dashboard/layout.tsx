@@ -41,7 +41,7 @@ export default async function DashboardLayout({
       {/* Desktop sidebar — hidden on mobile */}
       <aside className="hidden w-64 flex-col border-r border-slate-200 bg-white md:flex">
         <div className="px-5 py-5 text-xl font-bold">
-          <span className="text-brand">Ledger</span>LLC
+          <span className="text-brand">Nexus</span> Ledger
         </div>
         <OrgSwitcher orgs={orgs} activeId={activeOrg.id} />
         <div className="mt-4 flex-1">

@@ -5,7 +5,7 @@ export function CreateFirstOrg({ email }: { email: string }) {
     <div className="w-full max-w-sm">
       <div className="mb-6 text-center">
         <div className="text-2xl font-bold">
-          <span className="text-brand">Ledger</span>LLC
+          <span className="text-brand">Nexus</span> Ledger
         </div>
         <p className="mt-1 text-sm text-slate-500">
           Let&rsquo;s set up your first business

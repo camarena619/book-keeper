@@ -55,7 +55,7 @@ export function MfaEnrollment({ userEmail }: { userEmail: string }) {
     try {
       const { data, error } = await supabase.auth.mfa.enroll({
         factorType: "totp",
-        friendlyName: `LedgerLLC (${userEmail}) ${Date.now()}`,
+        friendlyName: `Nexus Ledger (${userEmail}) ${Date.now()}`,
       });
       if (error) throw error;
       setFactorId(data.id);

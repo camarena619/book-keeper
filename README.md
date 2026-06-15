@@ -1,4 +1,4 @@
-# LedgerLLC — AI-Powered Bookkeeping & Invoicing
+# Nexus Ledger — AI-Powered Bookkeeping & Invoicing
 
 Multi-tenant bookkeeping & invoicing platform for small-business LLCs
 (QuickBooks/Xero-style). Built on Next.js 15 App Router + Supabase.

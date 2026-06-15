@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "LedgerLLC — Bookkeeping & Invoicing",
-    short_name: "LedgerLLC",
+    name: "Nexus Ledger — Bookkeeping & Invoicing",
+    short_name: "Nexus Ledger",
     description:
       "Multi-tenant bookkeeping & invoicing for small-business LLCs.",
     start_url: "/dashboard",

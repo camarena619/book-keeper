@@ -6,10 +6,10 @@ import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "LedgerLLC — Bookkeeping & Invoicing",
+  title: "Nexus Ledger — Bookkeeping & Invoicing",
   description: "Multi-tenant bookkeeping & invoicing for small business LLCs.",
-  applicationName: "LedgerLLC",
-  appleWebApp: { capable: true, title: "LedgerLLC", statusBarStyle: "default" },
+  applicationName: "Nexus Ledger",
+  appleWebApp: { capable: true, title: "Nexus Ledger", statusBarStyle: "default" },
   icons: { icon: "/icon-192.png", apple: "/apple-icon.png" },
 };
 

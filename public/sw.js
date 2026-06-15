@@ -3,7 +3,7 @@
 // to a cached offline page only when the network is unavailable. Deliberately
 // does NOT cache API responses or authenticated HTML.
 
-const CACHE = "ledgerllc-v1";
+const CACHE = "nexus-ledger-v1";
 const PRECACHE = ["/offline", "/icon-192.png", "/icon-512.png"];
 
 self.addEventListener("install", (event) => {

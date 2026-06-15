@@ -21,7 +21,7 @@ export async function POST() {
   try {
     const resp = await plaid.linkTokenCreate({
       user: { client_user_id: user.id },
-      client_name: "LedgerLLC",
+      client_name: "Nexus Ledger",
       products: [Products.Transactions],
       country_codes: [CountryCode.Us],
       language: "en",

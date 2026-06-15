@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { setActiveOrg } from "@/app/(dashboard)/actions";
+import { setActiveOrg } from "@/app/dashboard/actions";
 import type { Org } from "@/lib/org";
 
 export function OrgSwitcher({

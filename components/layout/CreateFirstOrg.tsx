@@ -1,4 +1,4 @@
-import { createOrg } from "@/app/(dashboard)/actions";
+import { createOrg } from "@/app/dashboard/actions";
 
 export function CreateFirstOrg({ email }: { email: string }) {
   return (

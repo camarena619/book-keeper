@@ -13,7 +13,7 @@ import {
   createInvoice,
   updateInvoiceStatus,
   createInvoicePaymentLink,
-} from "@/app/(dashboard)/invoices/actions";
+} from "@/app/dashboard/invoices/actions";
 
 const PdfDownloadButton = dynamic(() => import("./PdfDownloadButton"), {
   ssr: false,

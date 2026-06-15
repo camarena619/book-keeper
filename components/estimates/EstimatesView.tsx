@@ -11,7 +11,7 @@ import {
   createEstimate,
   updateEstimateStatus,
   convertEstimate,
-} from "@/app/(dashboard)/estimates/actions";
+} from "@/app/dashboard/estimates/actions";
 
 export interface EstimateListItem {
   quote_id: string;

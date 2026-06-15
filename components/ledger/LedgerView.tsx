@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { cn, formatCurrency, formatDate } from "@/lib/utils";
-import { createAccount, type CreateAccountState } from "@/app/(dashboard)/ledger/actions";
+import { createAccount, type CreateAccountState } from "@/app/dashboard/ledger/actions";
 
 type AccountType = "asset" | "liability" | "equity" | "revenue" | "expense";
 

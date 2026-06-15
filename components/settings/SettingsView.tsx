@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { ShieldCheck } from "lucide-react";
 import { OrgSettingsSchema, type OrgSettingsInput } from "@/lib/schemas/org";
-import { updateOrgSettings } from "@/app/(dashboard)/settings/actions";
+import { updateOrgSettings } from "@/app/dashboard/settings/actions";
 
 export function SettingsView({
   initial,

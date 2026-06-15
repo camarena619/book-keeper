@@ -16,7 +16,7 @@ import {
   createExpense,
   approveExpense,
   suggestExpenseCategory,
-} from "@/app/(dashboard)/expenses/actions";
+} from "@/app/dashboard/expenses/actions";
 
 export interface Expense {
   id: string;

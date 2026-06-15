@@ -10,7 +10,7 @@ import {
   createContact,
   updateContact,
   deleteContact,
-} from "@/app/(dashboard)/contacts/actions";
+} from "@/app/dashboard/contacts/actions";
 
 export interface Contact {
   id: string;

@@ -6,9 +6,14 @@ import { useForm, useFieldArray, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Plus, Trash2 } from "lucide-react";
+import { Link2, Copy, Check } from "lucide-react";
 import { cn, formatCurrency, formatDate } from "@/lib/utils";
 import { InvoiceSchema, type InvoiceInput } from "@/lib/schemas/invoice";
-import { createInvoice, updateInvoiceStatus } from "@/app/(dashboard)/invoices/actions";
+import {
+  createInvoice,
+  updateInvoiceStatus,
+  createInvoicePaymentLink,
+} from "@/app/(dashboard)/invoices/actions";
 
 const PdfDownloadButton = dynamic(() => import("./PdfDownloadButton"), {
   ssr: false,
@@ -26,6 +31,7 @@ export interface InvoiceListItem {
   subtotal_cents: number;
   tax_cents: number;
   grand_total_cents: number;
+  payment_link_url: string | null;
   items: { title: string; description: string | null; total_cents: number }[];
 }
 
@@ -48,12 +54,14 @@ export function InvoicesView({
   org,
   canEdit,
   nextNumber,
+  stripeConfigured,
 }: {
   invoices: InvoiceListItem[];
   clients: ClientOption[];
   org: { name: string; email: string | null };
   canEdit: boolean;
   nextNumber: string;
+  stripeConfigured: boolean;
 }) {
   const router = useRouter();
   const [showForm, setShowForm] = useState(false);
@@ -155,6 +163,15 @@ export function InvoicesView({
                         items: inv.items,
                       }}
                     />
+                    {canEdit &&
+                      stripeConfigured &&
+                      inv.status !== "paid" &&
+                      inv.status !== "cancelled" && (
+                        <PayLink
+                          invoiceId={inv.invoice_id}
+                          existingUrl={inv.payment_link_url}
+                        />
+                      )}
                   </div>
                 </td>
               </tr>
@@ -366,5 +383,68 @@ function InvoiceBuilder({
         </form>
       </div>
     </div>
+  );
+}
+
+function PayLink({
+  invoiceId,
+  existingUrl,
+}: {
+  invoiceId: string;
+  existingUrl: string | null;
+}) {
+  const [url, setUrl] = useState<string | null>(existingUrl);
+  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [error, setError] = useState("");
+
+  async function copy(u: string) {
+    try {
+      await navigator.clipboard.writeText(u);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      /* clipboard blocked — the link is still saved on the invoice */
+    }
+  }
+
+  async function generate() {
+    setLoading(true);
+    setError("");
+    const r = await createInvoicePaymentLink(invoiceId);
+    setLoading(false);
+    if (r.error) {
+      setError(r.error);
+      return;
+    }
+    if (r.url) {
+      setUrl(r.url);
+      copy(r.url);
+    }
+  }
+
+  if (url) {
+    return (
+      <button
+        className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-slate-600 hover:bg-slate-100"
+        onClick={() => copy(url)}
+        title={url}
+      >
+        {copied ? <Check className="h-3.5 w-3.5 text-success" /> : <Copy className="h-3.5 w-3.5" />}
+        {copied ? "Copied" : "Pay link"}
+      </button>
+    );
+  }
+
+  return (
+    <button
+      className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-brand hover:bg-brand/10"
+      onClick={generate}
+      disabled={loading}
+      title={error || "Create a Stripe payment link"}
+    >
+      <Link2 className="h-3.5 w-3.5" />
+      {loading ? "…" : "Pay link"}
+    </button>
   );
 }

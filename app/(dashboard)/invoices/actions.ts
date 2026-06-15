@@ -3,9 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getActiveOrg } from "@/lib/org";
+import { getStripeClient } from "@/lib/stripe";
 import { InvoiceSchema, type InvoiceInput } from "@/lib/schemas/invoice";
 
 export type InvoiceActionState = { ok?: boolean; error?: string };
+export type PaymentLinkState = { ok?: boolean; error?: string; url?: string };
 
 const ALLOWED_STATUS = ["draft", "sent", "paid", "overdue", "cancelled"] as const;
 type Status = (typeof ALLOWED_STATUS)[number];
@@ -81,4 +83,67 @@ export async function updateInvoiceStatus(
   revalidatePath("/dashboard/ledger");
   revalidatePath("/dashboard");
   return { ok: true };
+}
+
+/**
+ * Create (or reuse) a Stripe Payment Link for an invoice so the customer can
+ * pay online. Stores the link id + url; the Stripe webhook later marks the
+ * invoice paid by matching the link id.
+ */
+export async function createInvoicePaymentLink(
+  invoiceId: string,
+): Promise<PaymentLinkState> {
+  const stripe = getStripeClient();
+  if (!stripe) {
+    return { error: "Stripe is not configured. Add STRIPE_SECRET_KEY to .env." };
+  }
+  const org = await getActiveOrg();
+  if (!org) return { error: "No active organization" };
+
+  const supabase = await createClient();
+  // Pull the computed total + existing link from the ledger view + table.
+  const [{ data: row }, { data: inv }] = await Promise.all([
+    supabase
+      .from("invoice_ledger")
+      .select("invoice_number, grand_total_cents")
+      .eq("invoice_id", invoiceId)
+      .single(),
+    supabase
+      .from("invoices")
+      .select("stripe_payment_link_url")
+      .eq("id", invoiceId)
+      .single(),
+  ]);
+
+  if (inv?.stripe_payment_link_url) {
+    return { ok: true, url: inv.stripe_payment_link_url };
+  }
+  if (!row || !row.grand_total_cents || row.grand_total_cents <= 0) {
+    return { error: "Invoice has no payable total." };
+  }
+
+  try {
+    const price = await stripe.prices.create({
+      currency: "usd",
+      unit_amount: row.grand_total_cents,
+      product_data: { name: `Invoice ${row.invoice_number}` },
+    });
+    const link = await stripe.paymentLinks.create({
+      line_items: [{ price: price.id, quantity: 1 }],
+      metadata: { invoice_id: invoiceId, org_id: org.id },
+    });
+
+    await supabase
+      .from("invoices")
+      .update({
+        stripe_payment_link_id: link.id,
+        stripe_payment_link_url: link.url,
+      })
+      .eq("id", invoiceId);
+
+    revalidatePath("/dashboard/invoices");
+    return { ok: true, url: link.url };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Stripe error" };
+  }
 }

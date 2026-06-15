@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 
@@ -10,8 +11,12 @@ export interface Org {
   role: string;
 }
 
-/** All organizations the current user belongs to, with their role in each. */
-export async function getUserOrgs(): Promise<Org[]> {
+/**
+ * All organizations the current user belongs to, with their role in each.
+ * Wrapped in React cache() so repeated calls within one request/render (layout
+ * + page) hit the database only once.
+ */
+export const getUserOrgs = cache(async (): Promise<Org[]> => {
   const supabase = await createClient();
   const { data } = await supabase
     .from("organization_members")
@@ -36,16 +41,16 @@ export async function getUserOrgs(): Promise<Org[]> {
         role: row.role as string,
       };
     });
-}
+});
 
 /**
  * Resolve the active organization: the one named in the active_org_id cookie if
  * the user is still a member, otherwise the first org they belong to.
  */
-export async function getActiveOrg(orgs?: Org[]): Promise<Org | null> {
+export const getActiveOrg = cache(async (orgs?: Org[]): Promise<Org | null> => {
   const all = orgs ?? (await getUserOrgs());
   if (all.length === 0) return null;
   const cookieStore = await cookies();
   const wanted = cookieStore.get(ACTIVE_ORG_COOKIE)?.value;
   return all.find((o) => o.id === wanted) ?? all[0];
-}
+});

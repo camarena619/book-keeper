@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   Users,
   FileText,
+  FileSpreadsheet,
   Receipt,
   Wallet,
   BookOpen,
@@ -17,6 +18,7 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/contacts", label: "Contacts", icon: Users },
+  { href: "/dashboard/estimates", label: "Estimates", icon: FileSpreadsheet },
   { href: "/dashboard/invoices", label: "Invoices", icon: FileText },
   { href: "/dashboard/expenses", label: "Expenses", icon: Receipt },
   { href: "/dashboard/banking", label: "Banking", icon: Wallet },

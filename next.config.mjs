@@ -10,11 +10,13 @@ const isDev = process.env.NODE_ENV !== "production";
 //   request IP server-side, so it is intentionally NOT allowlisted here.
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+  // cdn.plaid.com hosts the Plaid Link script + iframe.
+  `script-src 'self' 'unsafe-inline' https://cdn.plaid.com${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: blob:",
-  "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
+  "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.plaid.com",
+  "frame-src https://cdn.plaid.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",

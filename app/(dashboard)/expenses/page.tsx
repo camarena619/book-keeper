@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { getActiveOrg } from "@/lib/org";
+import { AI_CONFIGURED } from "@/lib/ai";
 import { ExpensesView, type Expense } from "@/components/expenses/ExpensesView";
 
 export default async function ExpensesPage() {
@@ -19,5 +20,12 @@ export default async function ExpensesPage() {
 
   const canEdit = ["owner", "admin", "editor"].includes(activeOrg.role);
 
-  return <ExpensesView pending={pending} approved={approved} canEdit={canEdit} />;
+  return (
+    <ExpensesView
+      pending={pending}
+      approved={approved}
+      canEdit={canEdit}
+      aiConfigured={AI_CONFIGURED}
+    />
+  );
 }

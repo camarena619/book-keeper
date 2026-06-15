@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { Sparkles } from "lucide-react";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import {
   ExpenseSchema,
@@ -11,7 +12,11 @@ import {
   type ExpenseInput,
   type ExpenseCategory,
 } from "@/lib/schemas/expense";
-import { createExpense, approveExpense } from "@/app/(dashboard)/expenses/actions";
+import {
+  createExpense,
+  approveExpense,
+  suggestExpenseCategory,
+} from "@/app/(dashboard)/expenses/actions";
 
 export interface Expense {
   id: string;
@@ -26,10 +31,12 @@ export function ExpensesView({
   pending,
   approved,
   canEdit,
+  aiConfigured,
 }: {
   pending: Expense[];
   approved: Expense[];
   canEdit: boolean;
+  aiConfigured: boolean;
 }) {
   const router = useRouter();
   const [showForm, setShowForm] = useState(false);
@@ -62,8 +69,9 @@ export function ExpensesView({
             Review Queue ({pending.length})
           </h2>
           <p className="mb-3 text-xs text-slate-500">
-            Bank-imported transactions awaiting categorization. Approving posts a
-            journal entry. (Claude-assisted suggestions are a planned enhancement.)
+            Bank-imported transactions awaiting categorization. Use{" "}
+            <span className="font-medium text-brand">Suggest</span> for a
+            Claude-assisted category, then Approve to post the journal entry.
           </p>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -83,6 +91,7 @@ export function ExpensesView({
                     expense={e}
                     canEdit={canEdit}
                     busy={busy}
+                    aiConfigured={aiConfigured}
                     onApprove={approve}
                   />
                 ))}
@@ -134,32 +143,74 @@ function ReviewRow({
   expense,
   canEdit,
   busy,
+  aiConfigured,
   onApprove,
 }: {
   expense: Expense;
   canEdit: boolean;
   busy: boolean;
+  aiConfigured: boolean;
   onApprove: (id: string, category: ExpenseCategory) => void;
 }) {
   const [category, setCategory] = useState<ExpenseCategory>(expense.category);
+  const [suggesting, setSuggesting] = useState(false);
+  const [confidence, setConfidence] = useState<number | null>(null);
+  const [aiError, setAiError] = useState("");
+
+  async function suggest() {
+    setSuggesting(true);
+    setAiError("");
+    setConfidence(null);
+    const r = await suggestExpenseCategory(expense.title, expense.amount_cents);
+    setSuggesting(false);
+    if (r.error) {
+      setAiError(r.error);
+      return;
+    }
+    if (r.category) {
+      setCategory(r.category);
+      setConfidence(r.confidence ?? null);
+    }
+  }
+
   return (
     <tr className="border-b border-amber-100">
       <td className="py-2">{formatDate(expense.expense_date)}</td>
       <td className="py-2 font-medium">{expense.title}</td>
       <td className="py-2 text-right font-mono">{formatCurrency(expense.amount_cents)}</td>
       <td className="py-2">
-        <select
-          className="rounded-md border border-slate-300 bg-white px-2 py-1 text-xs capitalize"
-          value={category}
-          onChange={(e) => setCategory(e.target.value as ExpenseCategory)}
-          disabled={!canEdit || busy}
-        >
-          {EXPENSE_CATEGORIES.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
+        <div className="flex items-center gap-2">
+          <select
+            className="rounded-md border border-slate-300 bg-white px-2 py-1 text-xs capitalize"
+            value={category}
+            onChange={(e) => setCategory(e.target.value as ExpenseCategory)}
+            disabled={!canEdit || busy}
+          >
+            {EXPENSE_CATEGORIES.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+          {aiConfigured && canEdit && (
+            <button
+              type="button"
+              className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-brand hover:bg-brand/10 disabled:opacity-50"
+              onClick={suggest}
+              disabled={busy || suggesting}
+              title="Suggest a category with Claude"
+            >
+              <Sparkles className="h-3.5 w-3.5" />
+              {suggesting ? "…" : "Suggest"}
+            </button>
+          )}
+        </div>
+        {confidence !== null && (
+          <div className="mt-0.5 text-xs text-slate-400">
+            AI confidence: {Math.round(confidence * 100)}%
+          </div>
+        )}
+        {aiError && <div className="mt-0.5 text-xs text-danger">{aiError}</div>}
       </td>
       {canEdit && (
         <td className="py-2 text-right">

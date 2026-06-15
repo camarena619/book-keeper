@@ -9,8 +9,14 @@ import {
   type ExpenseInput,
   type ExpenseCategory,
 } from "@/lib/schemas/expense";
+import { categorizeTransaction } from "@/lib/ai";
 
 export type ExpenseActionState = { ok?: boolean; error?: string };
+export type SuggestState = {
+  category?: ExpenseCategory;
+  confidence?: number;
+  error?: string;
+};
 
 function revalidate() {
   revalidatePath("/dashboard/expenses");
@@ -61,4 +67,20 @@ export async function approveExpense(
   if (error) return { error: error.message };
   revalidate();
   return { ok: true };
+}
+
+/** Claude-assisted category suggestion for a pending transaction. */
+export async function suggestExpenseCategory(
+  title: string,
+  amountCents: number,
+): Promise<SuggestState> {
+  try {
+    const result = await categorizeTransaction(title, amountCents);
+    if (!result) {
+      return { error: "AI categorization is not configured." };
+    }
+    return { category: result.category, confidence: result.confidence };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "AI request failed" };
+  }
 }

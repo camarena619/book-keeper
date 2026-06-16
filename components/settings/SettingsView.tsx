@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { ShieldCheck } from "lucide-react";
 import { OrgSettingsSchema, type OrgSettingsInput } from "@/lib/schemas/org";
 import { updateOrgSettings } from "@/app/dashboard/settings/actions";
+import { ReAuthModal, useReAuth } from "@/components/security/ReAuthModal";
 
 export function SettingsView({
   initial,
@@ -18,6 +19,8 @@ export function SettingsView({
   const router = useRouter();
   const [serverError, setServerError] = useState("");
   const [saved, setSaved] = useState(false);
+  const { showReAuth, actionDescription, requestReAuth, handleReAuthResult } =
+    useReAuth();
   const {
     register,
     handleSubmit,
@@ -30,6 +33,19 @@ export function SettingsView({
   async function onSubmit(values: OrgSettingsInput) {
     setServerError("");
     setSaved(false);
+
+    // Changing stored bank/ACH details is sensitive — require step-up auth.
+    const bankChanged =
+      values.routing_number !== initial.routing_number ||
+      values.account_number !== initial.account_number;
+    if (bankChanged) {
+      const verified = await requestReAuth("Update bank account (ACH) details");
+      if (!verified) {
+        setServerError("Identity not verified — your changes were not saved.");
+        return;
+      }
+    }
+
     const result = await updateOrgSettings(values);
     if (result.error) {
       setServerError(result.error);
@@ -41,6 +57,11 @@ export function SettingsView({
 
   return (
     <div className="flex max-w-2xl flex-col gap-6">
+      <ReAuthModal
+        isOpen={showReAuth}
+        actionDescription={actionDescription}
+        onResult={handleReAuthResult}
+      />
       <div className="flex items-start gap-2 rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-xs text-sky-800">
         <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" />
         <span>

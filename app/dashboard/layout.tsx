@@ -6,6 +6,7 @@ import { SidebarNav } from "@/components/layout/SidebarNav";
 import { SignOutButton } from "@/components/layout/SignOutButton";
 import { CreateFirstOrg } from "@/components/layout/CreateFirstOrg";
 import { SessionRegistrar } from "@/components/settings/SessionRegistrar";
+import { SessionTimeout } from "@/components/security/SessionTimeout";
 import { MobileTopBar } from "@/components/layout/MobileTopBar";
 
 export default async function DashboardLayout({
@@ -34,6 +35,7 @@ export default async function DashboardLayout({
   return (
     <div className="flex min-h-screen">
       <SessionRegistrar />
+      <SessionTimeout />
 
       {/* Desktop sidebar — hidden on mobile */}
       <aside className="hidden w-64 flex-col border-r border-slate-200 bg-white md:flex">

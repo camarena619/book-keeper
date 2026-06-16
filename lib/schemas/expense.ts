@@ -18,6 +18,8 @@ export const ExpenseSchema = z.object({
   category: z.enum(EXPENSE_CATEGORIES),
   amount: z.coerce.number().positive("Must be greater than 0").max(100_000_000),
   expense_date: z.string().min(1, "Date is required"),
+  // Optional link to a contractor (supplier) so payments roll up for 1099-NEC.
+  supplier_id: z.string().uuid().optional().or(z.literal("")),
 });
 
 export type ExpenseInput = z.infer<typeof ExpenseSchema>;

@@ -42,6 +42,7 @@ export async function createExpense(
     category: parsed.data.category,
     amount_cents: Math.round(parsed.data.amount * 100),
     expense_date: new Date(parsed.data.expense_date).toISOString(),
+    supplier_id: parsed.data.supplier_id || null,
     status: "approved",
   });
 

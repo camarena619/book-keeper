@@ -12,6 +12,7 @@ import {
   Wallet,
   BookOpen,
   BarChart3,
+  Landmark,
   Settings,
   Loader2,
   type LucideIcon,
@@ -28,6 +29,7 @@ const NAV = [
   { href: "/dashboard/banking", label: "Banking", icon: Wallet },
   { href: "/dashboard/ledger", label: "General Ledger", icon: BookOpen },
   { href: "/dashboard/reports", label: "Reports", icon: BarChart3 },
+  { href: "/dashboard/tax", label: "1099-NEC", icon: Landmark },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 

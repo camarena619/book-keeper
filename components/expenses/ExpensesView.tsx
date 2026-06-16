@@ -27,14 +27,21 @@ export interface Expense {
   status: "pending_review" | "approved";
 }
 
+export interface ContractorOption {
+  id: string;
+  name: string;
+}
+
 export function ExpensesView({
   pending,
   approved,
+  contractors,
   canEdit,
   aiConfigured,
 }: {
   pending: Expense[];
   approved: Expense[];
+  contractors: ContractorOption[];
   canEdit: boolean;
   aiConfigured: boolean;
 }) {
@@ -134,7 +141,12 @@ export function ExpensesView({
         </table>
       </div>
 
-      {showForm && <ExpenseModal onClose={() => setShowForm(false)} />}
+      {showForm && (
+        <ExpenseModal
+          contractors={contractors}
+          onClose={() => setShowForm(false)}
+        />
+      )}
     </div>
   );
 }
@@ -231,7 +243,13 @@ function todayStr() {
   return new Date().toISOString().slice(0, 10);
 }
 
-function ExpenseModal({ onClose }: { onClose: () => void }) {
+function ExpenseModal({
+  contractors,
+  onClose,
+}: {
+  contractors: ContractorOption[];
+  onClose: () => void;
+}) {
   const router = useRouter();
   const [serverError, setServerError] = useState("");
   const {
@@ -245,6 +263,7 @@ function ExpenseModal({ onClose }: { onClose: () => void }) {
       category: "materials",
       amount: 0,
       expense_date: todayStr(),
+      supplier_id: "",
     },
   });
 
@@ -304,6 +323,22 @@ function ExpenseModal({ onClose }: { onClose: () => void }) {
               <p className="mt-1 text-xs text-danger">{errors.expense_date.message}</p>
             )}
           </div>
+          {contractors.length > 0 && (
+            <div>
+              <label className="label">Contractor (1099) — optional</label>
+              <select className="input" {...register("supplier_id")}>
+                <option value="">None</option>
+                {contractors.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-1 text-xs text-slate-400">
+                Link this payment to a contractor so it counts toward their 1099-NEC.
+              </p>
+            </div>
+          )}
           <div className="flex justify-end gap-2">
             <button type="button" className="btn-secondary" onClick={onClose}>
               Cancel

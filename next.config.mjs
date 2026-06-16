@@ -37,11 +37,12 @@ const nextConfig = {
   // ESLint flat-config wiring comes later; type-checking still runs on build.
   eslint: { ignoreDuringBuilds: true },
   experimental: {
-    // Keep rendered pages in the client-side Router Cache so revisiting a tab
-    // you've already opened is instant (no server round-trip). Dynamic pages
-    // are reused for 30s; mutations call router.refresh() which busts the cache,
-    // so created/edited data still shows immediately.
-    staleTimes: { dynamic: 30, static: 180 },
+    // Client-side Router Cache: keep rendered pages in the browser so revisiting
+    // a tab is instant (no server round-trip). Dynamic pages are reused for
+    // 5 min, static for 10 min. Mutations call router.refresh() which busts the
+    // cache, so data you create/edit shows immediately; the only staleness is a
+    // change made on another device not appearing for up to 5 min on a cached tab.
+    staleTimes: { dynamic: 300, static: 600 },
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

@@ -131,6 +131,10 @@ export async function createInvoicePaymentLink(
     const link = await stripe.paymentLinks.create({
       line_items: [{ price: price.id, quantity: 1 }],
       metadata: { invoice_id: invoiceId, org_id: org.id },
+      // Offer both card and US bank-debit (ACH ~0.8%, $5 cap) so the customer can
+      // pick the cheaper rail. ACH must also be enabled in the Stripe dashboard
+      // (Settings → Payment methods); Stripe ignores methods that aren't active.
+      payment_method_types: ["card", "us_bank_account"],
     });
 
     await supabase

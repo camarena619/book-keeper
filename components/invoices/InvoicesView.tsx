@@ -198,6 +198,9 @@ export function InvoicesView({
   );
 }
 
+// Default credit-card surcharge percentage (≈ Stripe's 2.9% + 30¢ card cost).
+const CARD_FEE_PCT = 3;
+
 function defaultDueDate(): string {
   const d = new Date();
   d.setDate(d.getDate() + 30);
@@ -215,6 +218,7 @@ function InvoiceBuilder({
 }) {
   const router = useRouter();
   const [serverError, setServerError] = useState("");
+  const [addCardFee, setAddCardFee] = useState(false);
   const {
     register,
     control,
@@ -243,7 +247,30 @@ function InvoiceBuilder({
 
   async function onSubmit(values: InvoiceInput) {
     setServerError("");
-    const result = await createInvoice(values);
+
+    // Optional credit-card surcharge: append a clearly-labeled fee line based on
+    // the items' subtotal (3% ≈ Stripe's card cost). Skipped if there's nothing
+    // to charge.
+    const payload = { ...values };
+    if (addCardFee) {
+      const itemsSubtotal = values.items.reduce(
+        (s, it) => s + (Number(it.amount) || 0),
+        0,
+      );
+      const fee = Math.round(itemsSubtotal * CARD_FEE_PCT) / 100;
+      if (fee > 0) {
+        payload.items = [
+          ...values.items,
+          {
+            title: `Card processing fee (${CARD_FEE_PCT}%)`,
+            description: "Surcharge to cover card processing costs",
+            amount: fee,
+          },
+        ];
+      }
+    }
+
+    const result = await createInvoice(payload);
     if (result.error) {
       setServerError(result.error);
       return;
@@ -371,6 +398,24 @@ function InvoiceBuilder({
               </div>
             </div>
           </div>
+
+          <label className="flex items-start gap-2 rounded-md bg-slate-50 px-3 py-2 text-sm">
+            <input
+              type="checkbox"
+              className="mt-0.5"
+              checked={addCardFee}
+              onChange={(e) => setAddCardFee(e.target.checked)}
+            />
+            <span>
+              Add a <strong>{CARD_FEE_PCT}% card processing fee</strong> as a line
+              item (covers Stripe’s card cost). Added on top of the subtotal when
+              you create the invoice.
+              <span className="mt-0.5 block text-xs text-slate-400">
+                Note: card networks only allow surcharging credit cards, and a few
+                states restrict it — skip this if the client pays by bank/ACH.
+              </span>
+            </span>
+          </label>
 
           <div className="flex justify-end gap-2">
             <button type="button" className="btn-secondary" onClick={onClose}>

@@ -6,28 +6,61 @@
   --font-inter: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
-body {
-  @apply bg-canvas text-slate-900 antialiased;
+@layer base {
+  body {
+    @apply bg-canvas text-slate-700 antialiased;
+    /* Soft, fixed ambient wash so every screen has subtle depth, not flat gray. */
+    background-image:
+      radial-gradient(48rem 48rem at 108% -8%, rgba(37, 99, 235, 0.06), transparent 60%),
+      radial-gradient(42rem 42rem at -8% 108%, rgba(14, 165, 233, 0.05), transparent 60%);
+    background-attachment: fixed;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Tighter, more confident headings. */
+  h1, h2, h3 {
+    @apply tracking-tight text-slate-900;
+  }
+
+  /* Financial figures line up cleanly. */
+  .font-mono {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Refined, unobtrusive selection + focus. */
+  ::selection {
+    background-color: rgb(37 99 235 / 0.16);
+  }
 }
 
 /* Shared primitives used across the dashboard */
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-150 ease-out
+      disabled:cursor-not-allowed disabled:opacity-50
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/35 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas
+      active:scale-[0.98];
   }
   .btn-primary {
-    @apply btn bg-brand text-white hover:bg-brand/90;
+    @apply btn bg-brand text-white shadow-sm hover:bg-brand-dark hover:shadow-md;
   }
   .btn-secondary {
-    @apply btn border border-slate-300 bg-white text-slate-700 hover:bg-slate-50;
+    @apply btn border border-slate-200 bg-white text-slate-700 shadow-xs hover:border-slate-300 hover:bg-slate-50;
   }
   .card {
-    @apply rounded-lg border border-slate-200 bg-surface p-5 shadow-sm;
+    @apply rounded-2xl border border-line bg-surface p-5 shadow-card transition-shadow duration-200;
   }
   .input {
-    @apply w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20;
+    @apply w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 shadow-xs outline-none transition
+      placeholder:text-slate-400
+      hover:border-slate-300
+      focus:border-brand focus:ring-4 focus:ring-brand/10;
   }
   .label {
-    @apply mb-1 block text-sm font-medium text-slate-700;
+    @apply mb-1.5 block text-sm font-medium text-slate-700;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium;
   }
 }

@@ -115,7 +115,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   // ---- MFA challenge screen ----
   if (mfaRequired) {
     return (
-      <div className="w-full max-w-sm">
+      <div className="w-full max-w-sm rounded-2xl border border-line bg-white/90 p-8 shadow-elev backdrop-blur-sm">
         <div className="mb-6 text-center">
           <div className="text-2xl font-bold">Two-Factor Verification</div>
           <p className="mt-1 text-sm text-slate-500">
@@ -161,7 +161,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const strength = passwordStrength(password);
 
   return (
-    <div className="w-full max-w-sm">
+    <div className="w-full max-w-sm rounded-2xl border border-line bg-white/90 p-8 shadow-elev backdrop-blur-sm">
       <div className="mb-6 text-center">
         <div className="text-2xl font-bold">
           <span className="text-brand">Nexus</span> Ledger

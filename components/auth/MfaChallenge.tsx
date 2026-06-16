@@ -58,7 +58,7 @@ export function MfaChallenge() {
   }
 
   return (
-    <div className="w-full max-w-sm">
+    <div className="w-full max-w-sm rounded-2xl border border-line bg-white/90 p-8 shadow-elev backdrop-blur-sm">
       <div className="mb-6 text-center">
         <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-brand/10">
           <ShieldCheck className="h-6 w-6 text-brand" />

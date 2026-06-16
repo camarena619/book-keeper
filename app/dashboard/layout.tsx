@@ -38,17 +38,25 @@ export default async function DashboardLayout({
       <SessionTimeout />
 
       {/* Desktop sidebar — hidden on mobile */}
-      <aside className="hidden w-64 flex-col border-r border-slate-200 bg-white md:flex">
-        <div className="px-5 py-5 text-xl font-bold">
-          <span className="text-brand">Nexus</span> Ledger
+      <aside className="hidden w-64 flex-col border-r border-line bg-white/70 backdrop-blur-xl md:flex">
+        <div className="flex items-center gap-2.5 px-5 py-5">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand to-brand-accent text-sm font-bold text-white shadow-sm">
+            N
+          </span>
+          <span className="text-lg font-bold tracking-tight text-slate-900">
+            Nexus <span className="font-medium text-slate-400">Ledger</span>
+          </span>
         </div>
         <OrgSwitcher orgs={orgs} activeId={activeOrg.id} />
-        <div className="mt-4 flex-1">
+        <div className="mt-3 flex-1 overflow-y-auto">
           <SidebarNav />
         </div>
-        <div className="border-t border-slate-200 p-3">
-          <div className="mb-2 px-3 text-xs text-slate-400">
-            {user.email}
+        <div className="border-t border-line p-3">
+          <div className="mb-2 flex items-center gap-2 px-2">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-soft text-xs font-semibold uppercase text-brand">
+              {(user.email ?? "?").charAt(0)}
+            </span>
+            <span className="truncate text-xs text-slate-500">{user.email}</span>
           </div>
           <SignOutButton />
         </div>
@@ -62,7 +70,7 @@ export default async function DashboardLayout({
           userEmail={user.email ?? ""}
         />
         <main className="flex-1 overflow-y-auto">
-          <div className="mx-auto max-w-7xl px-4 py-6 md:px-8 md:py-8">
+          <div className="mx-auto max-w-7xl animate-fade-in px-4 py-6 md:px-8 md:py-10">
             {children}
           </div>
         </main>

@@ -1,6 +1,15 @@
+import { TrendingUp, Clock, Receipt, Wallet, type LucideIcon } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getActiveOrg } from "@/lib/org";
-import { formatCurrency, formatDate } from "@/lib/utils";
+import { formatCurrency, formatDate, cn } from "@/lib/utils";
+
+const STATUS_STYLES: Record<string, string> = {
+  paid: "bg-green-50 text-success ring-1 ring-green-100",
+  sent: "bg-brand-soft text-brand ring-1 ring-blue-100",
+  overdue: "bg-red-50 text-danger ring-1 ring-red-100",
+  draft: "bg-slate-100 text-slate-500",
+  cancelled: "bg-slate-100 text-slate-400",
+};
 
 interface InvoiceRow {
   invoice_id: string;
@@ -41,31 +50,57 @@ export default async function DashboardPage() {
   );
   const netProfit = totalSales - totalExpenses;
 
-  const metrics = [
-    { label: "Total Sales (Collected)", value: totalSales, color: "text-success" },
-    { label: "Outstanding Receivables", value: outstanding, color: "text-warning" },
-    { label: "Total Expenses", value: totalExpenses, color: "text-danger" },
-    { label: "Net Profit", value: netProfit, color: "text-brand" },
+  const metrics: {
+    label: string;
+    value: number;
+    color: string;
+    tint: string;
+    icon: LucideIcon;
+  }[] = [
+    { label: "Total Sales (Collected)", value: totalSales, color: "text-success", tint: "bg-green-50 text-success", icon: TrendingUp },
+    { label: "Outstanding Receivables", value: outstanding, color: "text-warning", tint: "bg-amber-50 text-warning", icon: Clock },
+    { label: "Total Expenses", value: totalExpenses, color: "text-danger", tint: "bg-red-50 text-danger", icon: Receipt },
+    {
+      label: "Net Profit",
+      value: netProfit,
+      color: netProfit < 0 ? "text-danger" : "text-brand",
+      tint: "bg-brand-soft text-brand",
+      icon: Wallet,
+    },
   ];
 
   return (
     <div className="flex flex-col gap-8">
       <header>
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <p className="text-sm text-slate-500">
-          {activeOrg.name} · your role: {activeOrg.role}
+        <p className="mt-1 text-sm text-slate-500">
+          {activeOrg.name} · your role:{" "}
+          <span className="capitalize text-slate-600">{activeOrg.role}</span>
         </p>
       </header>
 
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {metrics.map((m) => (
-          <div key={m.label} className="card">
-            <div className="text-sm text-slate-500">{m.label}</div>
-            <div className={`mt-1 text-2xl font-bold ${m.color}`}>
-              {formatCurrency(m.value)}
+        {metrics.map((m) => {
+          const Icon = m.icon;
+          return (
+            <div
+              key={m.label}
+              className="card group transition-all duration-200 hover:-translate-y-0.5 hover:shadow-elev"
+            >
+              <div className="flex items-start justify-between">
+                <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                  {m.label}
+                </span>
+                <span className={cn("flex h-8 w-8 items-center justify-center rounded-lg", m.tint)}>
+                  <Icon className="h-4 w-4" />
+                </span>
+              </div>
+              <div className={cn("mt-3 text-2xl font-bold tracking-tight tabular-nums", m.color)}>
+                {formatCurrency(m.value)}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </section>
 
       <section className="card">
@@ -96,7 +131,12 @@ export default async function DashboardPage() {
                       {formatCurrency(inv.grand_total_cents)}
                     </td>
                     <td className="py-2">
-                      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs capitalize">
+                      <span
+                        className={cn(
+                          "rounded-full px-2.5 py-0.5 text-xs font-medium capitalize",
+                          STATUS_STYLES[inv.status] ?? "bg-slate-100 text-slate-500",
+                        )}
+                      >
                         {inv.status}
                       </span>
                     </td>

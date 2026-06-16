@@ -62,13 +62,17 @@ export function SidebarNav() {
           <Link
             key={href}
             href={href}
+            aria-current={active ? "page" : undefined}
             className={cn(
-              "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+              "group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150",
               active
-                ? "bg-brand/10 text-brand"
-                : "text-slate-600 hover:bg-slate-100",
+                ? "bg-brand-soft font-semibold text-brand shadow-xs"
+                : "text-slate-600 hover:bg-slate-100/80 hover:text-slate-900",
             )}
           >
+            {active && (
+              <span className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-brand" />
+            )}
             <NavItemContent Icon={Icon} label={label} />
           </Link>
         );

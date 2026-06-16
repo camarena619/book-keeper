@@ -16,6 +16,7 @@ import {
   FILING_STATUS_LABELS,
 } from "@/lib/schemas/employee";
 import { saveEmployee, deleteEmployee } from "@/app/dashboard/payroll/employees/actions";
+import { PayrollTabs } from "./PayrollTabs";
 
 export interface Employee {
   id: string;
@@ -67,6 +68,7 @@ export function EmployeesView({
 
   return (
     <div className="flex flex-col gap-6">
+      <PayrollTabs />
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold">Payroll — Employees</h1>

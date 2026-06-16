@@ -20,11 +20,20 @@ export interface ReportExpense {
   amount_cents: number;
   expense_date: string;
 }
+export interface ReportPayrollRun {
+  id: string;
+  pay_date: string;
+  gross_cents: number;
+  employee_tax_cents: number;
+  employer_tax_cents: number;
+  net_cents: number;
+}
 
 const TABS = [
   { id: "aging", label: "A/R Aging" },
   { id: "sales", label: "Sales by Customer" },
   { id: "expense", label: "Expense by Category" },
+  { id: "payroll", label: "Payroll" },
 ] as const;
 type TabId = (typeof TABS)[number]["id"];
 
@@ -55,9 +64,11 @@ function bucketFor(dueDate: string): (typeof AGING_BUCKETS)[number] {
 export function ReportsView({
   invoices,
   expenses,
+  payrollRuns = [],
 }: {
   invoices: ReportInvoice[];
   expenses: ReportExpense[];
+  payrollRuns?: ReportPayrollRun[];
 }) {
   const [tab, setTab] = useState<TabId>("aging");
   const [from, setFrom] = useState("");
@@ -117,6 +128,25 @@ export function ReportsView({
     return { rows, grand: rows.reduce((s, r) => s + r.total, 0) };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [expenses, from, to]);
+
+  // ---- Payroll (posted runs, date-filtered by pay date) ----
+  const payroll = useMemo(() => {
+    const rows = payrollRuns
+      .filter((r) => inRange(r.pay_date))
+      .sort((a, b) => (a.pay_date < b.pay_date ? 1 : -1));
+    const totals = rows.reduce(
+      (acc, r) => {
+        acc.gross += r.gross_cents;
+        acc.empTax += r.employee_tax_cents;
+        acc.erTax += r.employer_tax_cents;
+        acc.net += r.net_cents;
+        return acc;
+      },
+      { gross: 0, empTax: 0, erTax: 0, net: 0 },
+    );
+    return { rows, totals };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [payrollRuns, from, to]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -269,6 +299,51 @@ export function ReportsView({
             empty="No expenses in this range."
             capitalizeFirst
           />
+        </div>
+      )}
+
+      {tab === "payroll" && (
+        <div className="card overflow-x-auto">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="font-semibold">
+              Payroll · gross {formatCurrency(payroll.totals.gross)} · net{" "}
+              {formatCurrency(payroll.totals.net)}
+            </h2>
+            <button
+              className="btn-secondary text-xs"
+              disabled={payroll.rows.length === 0}
+              onClick={() =>
+                downloadCsv(
+                  "payroll.csv",
+                  ["Pay date", "Gross", "Employee taxes", "Employer taxes", "Net"],
+                  payroll.rows.map((r) => [
+                    r.pay_date,
+                    (r.gross_cents / 100).toFixed(2),
+                    (r.employee_tax_cents / 100).toFixed(2),
+                    (r.employer_tax_cents / 100).toFixed(2),
+                    (r.net_cents / 100).toFixed(2),
+                  ]),
+                )
+              }
+            >
+              <Download className="h-4 w-4" /> CSV
+            </button>
+          </div>
+          <ReportTable
+            head={["Pay date", "Gross", "Employee taxes", "Employer taxes", "Net"]}
+            rows={payroll.rows.map((r) => [
+              formatDate(r.pay_date),
+              formatCurrency(r.gross_cents),
+              formatCurrency(r.employee_tax_cents),
+              formatCurrency(r.employer_tax_cents),
+              formatCurrency(r.net_cents),
+            ])}
+            empty="No posted pay runs in this range."
+          />
+          <p className="mt-3 text-xs text-slate-400">
+            Total employer payroll-tax cost in range:{" "}
+            <span className="font-mono">{formatCurrency(payroll.totals.erTax)}</span>
+          </p>
         </div>
       )}
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Plus, Trash2, CheckCircle2 } from "lucide-react";
 import { formatCurrency, formatDate, cn } from "@/lib/utils";
@@ -133,7 +134,11 @@ export function PayrollView({
             <tbody>
               {payRuns.map((r) => (
                 <tr key={r.id} className="border-b border-slate-100">
-                  <td className="py-2 font-medium">{formatDate(r.pay_date)}</td>
+                  <td className="py-2 font-medium">
+                    <Link href={`/dashboard/payroll/${r.id}`} className="text-brand hover:underline">
+                      {formatDate(r.pay_date)}
+                    </Link>
+                  </td>
                   <td className="text-slate-500">
                     {formatDate(r.period_start)} – {formatDate(r.period_end)}
                   </td>

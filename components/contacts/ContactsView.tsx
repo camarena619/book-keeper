@@ -98,7 +98,7 @@ export function ContactsView({
                     <div className="flex justify-end gap-1">
                       {canEdit && (
                         <button
-                          className="rounded p-1.5 text-slate-500 hover:bg-slate-100"
+                          className="rounded p-1.5 text-slate-500 hover:bg-slate-200"
                           onClick={() => openEdit(c)}
                           aria-label="Edit"
                         >
@@ -107,7 +107,7 @@ export function ContactsView({
                       )}
                       {canDelete && (
                         <button
-                          className="rounded p-1.5 text-red-500 hover:bg-red-50"
+                          className="rounded p-1.5 text-red-500 hover:bg-danger/10"
                           onClick={() => setDeleting(c)}
                           aria-label="Delete"
                         >
@@ -186,12 +186,12 @@ function ContactModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+      <div className="w-full max-w-md rounded-2xl border border-line bg-slate-100/90 p-6 shadow-elev backdrop-blur-xl">
         <h3 className="mb-4 text-lg font-semibold">
           {contact ? "Edit Contact" : "Add Contact"}
         </h3>
         {serverError && (
-          <div className="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+          <div className="mb-3 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">
             {serverError}
           </div>
         )}
@@ -266,13 +266,13 @@ function DeleteConfirm({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-sm rounded-lg bg-white p-6 shadow-xl">
+      <div className="w-full max-w-sm rounded-2xl border border-line bg-slate-100/90 p-6 shadow-elev backdrop-blur-xl">
         <h3 className="text-lg font-semibold">Delete contact?</h3>
         <p className="mt-2 text-sm text-slate-500">
           This will permanently remove <strong>{contact.name}</strong>.
         </p>
         {error && (
-          <div className="mt-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+          <div className="mt-3 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">
             {error}
           </div>
         )}

@@ -30,11 +30,11 @@ export interface ClientOption {
 }
 
 const STATUS_BADGE: Record<string, string> = {
-  draft: "bg-slate-100 text-slate-600",
-  sent: "bg-sky-100 text-sky-700",
-  accepted: "bg-green-100 text-green-700",
-  declined: "bg-red-100 text-red-700",
-  converted: "bg-violet-100 text-violet-700",
+  draft: "bg-slate-200/50 text-slate-400 border border-line",
+  sent: "bg-sky-950/40 text-sky-400 border border-sky-800/30",
+  accepted: "bg-success/15 text-success border border-success/30",
+  declined: "bg-danger/15 text-danger border border-danger/30",
+  converted: "bg-brand/15 text-brand-accent border border-brand/30",
 };
 
 export function EstimatesView({
@@ -88,7 +88,7 @@ export function EstimatesView({
       </header>
 
       {error && (
-        <div className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
+        <div className="rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">{error}</div>
       )}
 
       <div className="card overflow-x-auto">
@@ -127,16 +127,16 @@ export function EstimatesView({
                       )}
                       {q.status === "sent" && (
                         <>
-                          <button className="rounded px-2 py-1 text-xs font-medium text-success hover:bg-green-50" onClick={() => setStatus(q.quote_id, "accepted")} disabled={pending}>
+                          <button className="rounded px-2 py-1 text-xs font-medium text-success hover:bg-success/15" onClick={() => setStatus(q.quote_id, "accepted")} disabled={pending}>
                             Accept
                           </button>
-                          <button className="rounded px-2 py-1 text-xs font-medium text-danger hover:bg-red-50" onClick={() => setStatus(q.quote_id, "declined")} disabled={pending}>
+                          <button className="rounded px-2 py-1 text-xs font-medium text-danger hover:bg-danger/10" onClick={() => setStatus(q.quote_id, "declined")} disabled={pending}>
                             Decline
                           </button>
                         </>
                       )}
                       {(q.status === "accepted" || q.status === "sent") && (
-                        <button className="rounded px-2 py-1 text-xs font-medium text-violet-700 hover:bg-violet-50" onClick={() => convert(q.quote_id)} disabled={pending}>
+                        <button className="rounded px-2 py-1 text-xs font-medium text-brand-accent hover:bg-brand-soft" onClick={() => convert(q.quote_id)} disabled={pending}>
                           → Invoice
                         </button>
                       )}
@@ -216,10 +216,10 @@ function EstimateBuilder({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/40 px-4 py-8">
-      <div className="w-full max-w-2xl rounded-lg bg-white p-6 shadow-xl">
+      <div className="w-full max-w-2xl rounded-2xl border border-line bg-slate-100/90 p-6 shadow-elev backdrop-blur-xl">
         <h3 className="mb-4 text-lg font-semibold">New Estimate</h3>
         {serverError && (
-          <div className="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{serverError}</div>
+          <div className="mb-3 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">{serverError}</div>
         )}
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -263,7 +263,7 @@ function EstimateBuilder({
                     <input type="number" step="0.01" className="input font-mono" placeholder="0.00" {...register(`items.${i}.amount`, { valueAsNumber: true })} />
                     {errors.items?.[i]?.amount && <p className="mt-0.5 text-xs text-danger">{errors.items[i]?.amount?.message}</p>}
                   </div>
-                  <button type="button" className="self-start rounded p-2 text-red-500 hover:bg-red-50 disabled:opacity-30" onClick={() => remove(i)} disabled={fields.length === 1} aria-label="Remove line">
+                  <button type="button" className="self-start rounded p-2 text-red-500 hover:bg-danger/10 disabled:opacity-30" onClick={() => remove(i)} disabled={fields.length === 1} aria-label="Remove line">
                     <Trash2 className="h-4 w-4" />
                   </button>
                 </div>

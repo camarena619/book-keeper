@@ -67,10 +67,10 @@ export function BankingView({
       {syncStatus && (
         <div
           className={cn(
-            "rounded-md px-3 py-2 text-sm",
+            "rounded-md px-3 py-2 text-sm border",
             syncStatus.startsWith("Error")
-              ? "border border-red-200 bg-red-50 text-red-800"
-              : "border border-green-200 bg-green-50 text-green-800"
+              ? "border-danger/30 bg-red-950/40 text-danger"
+              : "border-success/30 bg-green-950/40 text-success"
           )}
         >
           {syncStatus}
@@ -78,13 +78,13 @@ export function BankingView({
       )}
 
       {!plaidConfigured && (
-        <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+        <div className="rounded-md border border-amber-800/60 bg-amber-950/40 px-3 py-2 text-sm text-amber-200">
           Plaid isn&rsquo;t configured yet. Add <code>PLAID_CLIENT_ID</code> and{" "}
           <code>PLAID_SECRET</code> (sandbox) to <code>.env</code> to enable bank connections.
         </div>
       )}
       {plaidConfigured && !isAal2 && (
-        <div className="rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-sm text-sky-800">
+        <div className="rounded-md border border-sky-800/60 bg-sky-950/40 px-3 py-2 text-sm text-sky-200">
           Bank access requires two-factor authentication. Enable 2FA in Settings, then sign in
           again to manage bank connections.
         </div>

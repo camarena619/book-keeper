@@ -58,12 +58,12 @@ export function MfaChallenge() {
   }
 
   return (
-    <div className="w-full max-w-sm rounded-2xl border border-line bg-white/90 p-8 shadow-elev backdrop-blur-sm">
+    <div className="w-full max-w-sm rounded-2xl border border-line bg-slate-100/90 p-8 shadow-elev backdrop-blur-xl">
       <div className="mb-6 text-center">
-        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-brand/10">
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-brand/15">
           <ShieldCheck className="h-6 w-6 text-brand" />
         </div>
-        <div className="text-2xl font-bold">Two-Factor Verification</div>
+        <div className="text-2xl font-bold text-slate-900">Two-Factor Verification</div>
         <p className="mt-1 text-sm text-slate-500">
           Your account requires two-factor authentication. Enter the 6-digit code
           from your authenticator app to continue.
@@ -71,7 +71,7 @@ export function MfaChallenge() {
       </div>
 
       {error && (
-        <div className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+        <div className="mb-4 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">
           {error}
         </div>
       )}
@@ -96,7 +96,7 @@ export function MfaChallenge() {
         </button>
         <button
           type="button"
-          className="text-sm text-slate-500 hover:text-slate-700"
+          className="text-sm text-slate-500 hover:text-slate-300"
           onClick={cancel}
         >
           Cancel and sign out

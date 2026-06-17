@@ -127,7 +127,7 @@ export function ActiveSessions() {
       </div>
 
       {error && (
-        <div className="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
+        <div className="mb-3 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">{error}</div>
       )}
 
       {loading ? (
@@ -150,7 +150,7 @@ export function ActiveSessions() {
                   <div className="text-sm font-medium">
                     {info.browser} on {info.os}
                     {s.is_current && (
-                      <span className="ml-2 rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-700">
+                      <span className="ml-2 rounded-full bg-success/15 text-success border border-success/30 px-2 py-0.5 text-xs">
                         This device
                       </span>
                     )}
@@ -163,7 +163,7 @@ export function ActiveSessions() {
                 </div>
                 {!s.is_current && (
                   <button
-                    className="rounded px-2 py-1 text-xs font-medium text-danger hover:bg-red-50"
+                    className="rounded px-2 py-1 text-xs font-medium text-danger hover:bg-danger/10"
                     onClick={() => revoke(s.id)}
                     disabled={busy !== null}
                   >

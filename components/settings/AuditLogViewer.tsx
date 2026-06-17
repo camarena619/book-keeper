@@ -152,7 +152,7 @@ export function AuditLogViewer({ canView }: { canView: boolean }) {
       </div>
 
       {error && (
-        <div className="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
+        <div className="mb-3 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">{error}</div>
       )}
 
       {loading ? (
@@ -205,7 +205,7 @@ export function AuditLogViewer({ canView }: { canView: boolean }) {
                         <div className="mb-2 text-xs text-slate-500">
                           Record {l.record_id} · actor {l.actor_id ?? "system"}
                         </div>
-                        <pre className="max-h-64 overflow-auto rounded bg-white p-3 text-xs">
+                        <pre className="max-h-64 overflow-auto rounded bg-slate-200 border border-line p-3 text-xs">
                           {JSON.stringify(
                             l.action === "DELETE" ? l.old_data : l.new_data,
                             null,

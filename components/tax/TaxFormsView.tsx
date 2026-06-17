@@ -300,7 +300,7 @@ function PayerDialog({ payer, onClose }: { payer: PayerInfo; onClose: () => void
   return (
     <Modal title="Payer tax info" onClose={onClose}>
       {serverError && (
-        <div className="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+        <div className="mb-3 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">
           {serverError}
         </div>
       )}
@@ -365,7 +365,7 @@ function ContractorDialog({
   return (
     <Modal title={existing ? "Edit contractor (W-9)" : "Add contractor"} onClose={onClose}>
       {serverError && (
-        <div className="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+        <div className="mb-3 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">
           {serverError}
         </div>
       )}
@@ -413,7 +413,7 @@ function Modal({
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/40 px-4 py-8">
-      <div className="w-full max-w-lg rounded-lg bg-white p-6 shadow-xl">
+      <div className="w-full max-w-lg rounded-2xl border border-line bg-slate-100/90 p-6 shadow-elev backdrop-blur-xl">
         <h3 className="mb-4 text-lg font-semibold">{title}</h3>
         {children}
       </div>

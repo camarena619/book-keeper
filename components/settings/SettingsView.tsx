@@ -8,6 +8,8 @@ import { ShieldCheck } from "lucide-react";
 import { OrgSettingsSchema, type OrgSettingsInput } from "@/lib/schemas/org";
 import { updateOrgSettings } from "@/app/dashboard/settings/actions";
 import { ReAuthModal, useReAuth } from "@/components/security/ReAuthModal";
+import { useTheme } from "@/components/theme/ThemeProvider";
+import { cn } from "@/lib/utils";
 
 export function SettingsView({
   initial,
@@ -21,6 +23,7 @@ export function SettingsView({
   const [saved, setSaved] = useState(false);
   const { showReAuth, actionDescription, requestReAuth, handleReAuthResult } =
     useReAuth();
+  const { theme, toggleTheme } = useTheme();
   const {
     register,
     handleSubmit,
@@ -72,18 +75,18 @@ export function SettingsView({
       </div>
 
       {!isOwner && (
-        <div className="rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-800">
+        <div className="rounded-md bg-amber-950/40 border border-amber-800/60 px-3 py-2 text-sm text-amber-200">
           Only the organization owner can edit these settings. Fields are
           read-only.
         </div>
       )}
       {serverError && (
-        <div className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+        <div className="rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">
           {serverError}
         </div>
       )}
       {saved && (
-        <div className="rounded-md bg-green-50 px-3 py-2 text-sm text-green-700">
+        <div className="rounded-md bg-green-950/40 border border-green-800/60 px-3 py-2 text-sm text-green-200">
           Settings saved.
         </div>
       )}
@@ -107,7 +110,7 @@ export function SettingsView({
           )}
         </div>
 
-        <div className="border-t border-slate-200 pt-4">
+        <div className="border-t border-line pt-4">
           <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">
             Direct ACH (encrypted)
           </h2>
@@ -138,6 +141,37 @@ export function SettingsView({
                 <p className="mt-1 text-xs text-danger">{errors.account_number.message}</p>
               )}
             </div>
+          </div>
+        </div>
+
+        <div className="border-t border-line pt-4">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">
+            App Preferences
+          </h2>
+          <div className="flex items-center justify-between rounded-lg border border-line bg-slate-100 p-4">
+            <div>
+              <div className="text-sm font-medium text-slate-900">Dark Theme</div>
+              <div className="text-xs text-slate-500">
+                Toggle between light and dark modes for Nexus Ledger
+              </div>
+            </div>
+            <button
+              type="button"
+              className={cn(
+                "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-canvas",
+                theme === "dark" ? "bg-brand" : "bg-slate-300"
+              )}
+              role="switch"
+              aria-checked={theme === "dark"}
+              onClick={toggleTheme}
+            >
+              <span
+                className={cn(
+                  "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-xs ring-0 transition duration-200 ease-in-out",
+                  theme === "dark" ? "translate-x-5" : "translate-x-0"
+                )}
+              />
+            </button>
           </div>
         </div>
 

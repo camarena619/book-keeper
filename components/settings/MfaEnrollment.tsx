@@ -117,15 +117,15 @@ export function MfaEnrollment({ userEmail }: { userEmail: string }) {
       </div>
 
       <span
-        className={`mb-4 inline-block rounded-full px-2.5 py-1 text-xs font-medium ${
-          aal === "aal2" ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-600"
+        className={`mb-4 inline-block rounded-full px-2.5 py-1 text-xs font-medium border ${
+          aal === "aal2" ? "bg-success/15 text-success border-success/30" : "bg-slate-200 text-slate-400 border-line"
         }`}
       >
         {aal === "aal2" ? "● MFA active (AAL2)" : "○ MFA not configured"}
       </span>
 
       {error && (
-        <div className="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
+        <div className="mb-3 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">{error}</div>
       )}
 
       {step === "overview" && (
@@ -144,7 +144,7 @@ export function MfaEnrollment({ userEmail }: { userEmail: string }) {
                     </div>
                   </div>
                   <button
-                    className="rounded px-2 py-1 text-xs font-medium text-danger hover:bg-red-50"
+                    className="rounded px-2 py-1 text-xs font-medium text-danger hover:bg-danger/10"
                     onClick={() => handleUnenroll(f.id)}
                     disabled={loading}
                   >

@@ -140,20 +140,20 @@ export function ReAuthModal({ isOpen, actionDescription, onResult }: ReAuthModal
       aria-modal="true"
       aria-label="Re-authentication required"
     >
-      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+      <div className="w-full max-w-md rounded-2xl border border-line bg-slate-100/90 p-6 shadow-elev backdrop-blur-xl">
         <div className="mb-4 text-center">
           <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-brand/10">
             <Lock className="h-6 w-6 text-brand" />
           </div>
           <h3 className="text-lg font-semibold">Confirm your identity</h3>
           <p className="mt-1 text-sm text-slate-500">This action requires verification:</p>
-          <div className="mt-2 inline-block rounded-md bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700">
+          <div className="mt-2 inline-block rounded-md bg-slate-200 px-3 py-1 text-sm font-medium text-slate-700">
             {actionDescription}
           </div>
         </div>
 
         {error && (
-          <div className="mb-3 flex items-start gap-2 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+          <div className="mb-3 flex items-start gap-2 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">
             <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
             <span>{error}</span>
           </div>

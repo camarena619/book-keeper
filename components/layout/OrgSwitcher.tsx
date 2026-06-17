@@ -19,7 +19,7 @@ export function OrgSwitcher({
         Active Entity
       </label>
       <select
-        className="w-full rounded-md border border-slate-200 bg-white px-2 py-1.5 text-sm"
+        className="w-full rounded-md border border-line bg-slate-100 text-slate-900 px-2 py-1.5 text-sm outline-none transition focus:border-brand/60 focus:ring-2 focus:ring-brand/15"
         value={activeId}
         disabled={pending}
         onChange={(e) =>

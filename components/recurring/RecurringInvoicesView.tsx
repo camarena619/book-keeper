@@ -177,7 +177,7 @@ export function RecurringInvoicesView({
                           )}
                         </button>
                         <button
-                          className="rounded p-1.5 text-slate-500 hover:bg-slate-100"
+                          className="rounded p-1.5 text-slate-500 hover:bg-slate-200"
                           title="Edit"
                           onClick={() => setEditing(r)}
                           disabled={busyId === r.id}
@@ -185,7 +185,7 @@ export function RecurringInvoicesView({
                           <Pencil className="h-4 w-4" />
                         </button>
                         <button
-                          className="rounded p-1.5 text-danger hover:bg-red-50"
+                          className="rounded p-1.5 text-danger hover:bg-danger/10"
                           title="Delete"
                           onClick={() => remove(r.id)}
                           disabled={busyId === r.id}
@@ -290,12 +290,12 @@ function RecurringBuilder({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/40 px-4 py-8">
-      <div className="w-full max-w-2xl rounded-lg bg-white p-6 shadow-xl">
+      <div className="w-full max-w-2xl rounded-2xl border border-line bg-slate-100/90 p-6 shadow-elev backdrop-blur-xl">
         <h3 className="mb-4 text-lg font-semibold">
           {existing ? "Edit recurring schedule" : "New recurring schedule"}
         </h3>
         {serverError && (
-          <div className="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+          <div className="mb-3 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">
             {serverError}
           </div>
         )}

@@ -11,17 +11,32 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          DEFAULT: "#2563eb", // refined royal blue — trust, finance
-          dark: "#1d4ed8", // hover / pressed
-          accent: "#0ea5e9", // sky accent
-          soft: "#eef4ff", // tinted surfaces
+          DEFAULT: "#6366f1", // refined indigo
+          dark: "#4f46e5", // hover
+          accent: "#8b5cf6", // violet accent
+          soft: "rgba(99, 102, 241, 0.15)", // translucent brand surface
         },
-        success: "#15803d",
-        warning: "#b45309",
-        danger: "#dc2626",
-        surface: "#ffffff",
-        canvas: "#f5f7fb",
-        line: "#e7ecf3", // hairline borders
+        success: "#10b981", // emerald
+        warning: "#f59e0b", // amber
+        danger: "#ef4444", // red
+        surface: "var(--surface)",
+        canvas: "var(--canvas)",
+        line: "var(--line)",
+        
+        // Swapped slate shades to automatically invert dark/light text and backgrounds
+        slate: {
+          50: "var(--slate-50)",
+          100: "var(--slate-100)",
+          200: "var(--slate-200)",
+          300: "var(--slate-300)",
+          400: "var(--slate-400)",
+          500: "var(--slate-500)",
+          600: "var(--slate-600)",
+          700: "var(--slate-700)",
+          800: "var(--slate-800)",
+          900: "var(--slate-900)",
+          950: "var(--slate-950)",
+        },
       },
       fontFamily: {
         sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
@@ -32,10 +47,12 @@ const config: Config = {
         "3xl": "1.5rem",
       },
       boxShadow: {
-        xs: "0 1px 2px 0 rgb(15 23 42 / 0.05)",
-        card: "0 1px 3px rgb(15 23 42 / 0.06), 0 1px 2px -1px rgb(15 23 42 / 0.05)",
-        elev: "0 6px 22px -8px rgb(15 23 42 / 0.14), 0 2px 8px -3px rgb(15 23 42 / 0.07)",
-        pop: "0 18px 44px -12px rgb(15 23 42 / 0.22), 0 6px 16px -6px rgb(15 23 42 / 0.12)",
+        xs: "0 1px 2px 0 rgb(0 0 0 / 0.3)",
+        card: "0 4px 20px -2px rgb(0 0 0 / 0.35), 0 2px 8px -1px rgb(0 0 0 / 0.2)",
+        elev: "0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.4)",
+        pop: "0 25px 50px -12px rgb(0 0 0 / 0.6)",
+        glow: "0 0 14px 0 rgba(99, 102, 241, 0.15)",
+        "glow-brand": "0 0 16px 0 rgba(99, 102, 241, 0.22)",
       },
       keyframes: {
         "fade-in": {

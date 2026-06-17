@@ -111,7 +111,7 @@ export function PayrollView({
         </div>
       )}
       {error && (
-        <div className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
+        <div className="rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">{error}</div>
       )}
 
       <div className="card overflow-x-auto">
@@ -147,10 +147,10 @@ export function PayrollView({
                   <td>
                     <span
                       className={cn(
-                        "rounded-full px-2 py-0.5 text-xs",
+                        "rounded-full px-2 py-0.5 text-xs border",
                         r.status === "posted"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-amber-100 text-amber-700",
+                          ? "bg-success/15 text-success border-success/30"
+                          : "bg-warning/15 text-warning border-warning/30",
                       )}
                     >
                       {r.status}
@@ -161,7 +161,7 @@ export function PayrollView({
                       <div className="flex items-center justify-end gap-1">
                         {r.status === "draft" && (
                           <button
-                            className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-green-700 hover:bg-green-50"
+                            className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-success hover:bg-success/15"
                             onClick={() => post(r.id)}
                             disabled={busy === r.id}
                           >
@@ -169,7 +169,7 @@ export function PayrollView({
                           </button>
                         )}
                         <button
-                          className="rounded p-1.5 text-danger hover:bg-red-50"
+                          className="rounded p-1.5 text-danger hover:bg-danger/10"
                           title="Delete"
                           onClick={() => remove(r.id, r.status === "posted")}
                           disabled={busy === r.id}
@@ -273,10 +273,10 @@ function NewPayRunDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/40 px-4 py-8">
-      <div className="w-full max-w-3xl rounded-lg bg-white p-6 shadow-xl">
+      <div className="w-full max-w-3xl rounded-2xl border border-line bg-slate-100/90 p-6 shadow-elev backdrop-blur-xl">
         <h3 className="mb-4 text-lg font-semibold">New pay run</h3>
         {serverError && (
-          <div className="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+          <div className="mb-3 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">
             {serverError}
           </div>
         )}

@@ -193,7 +193,7 @@ function ReviewRow({
       <td className="py-2">
         <div className="flex items-center gap-2">
           <select
-            className="rounded-md border border-slate-300 bg-white px-2 py-1 text-xs capitalize"
+            className="rounded-md border border-line bg-slate-100 text-slate-900 px-2 py-1 text-xs capitalize outline-none transition focus:border-brand/60 focus:ring-1 focus:ring-brand/15"
             value={category}
             onChange={(e) => setCategory(e.target.value as ExpenseCategory)}
             disabled={!canEdit || busy}
@@ -227,7 +227,7 @@ function ReviewRow({
       {canEdit && (
         <td className="py-2 text-right">
           <button
-            className="rounded px-2 py-1 text-xs font-medium text-success hover:bg-green-50"
+            className="rounded px-2 py-1 text-xs font-medium text-success hover:bg-success/15"
             onClick={() => onApprove(expense.id, category)}
             disabled={busy}
           >
@@ -280,10 +280,10 @@ function ExpenseModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+      <div className="w-full max-w-md rounded-2xl border border-line bg-slate-100/90 p-6 shadow-elev backdrop-blur-xl">
         <h3 className="mb-4 text-lg font-semibold">Log Expense</h3>
         {serverError && (
-          <div className="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+          <div className="mb-3 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">
             {serverError}
           </div>
         )}

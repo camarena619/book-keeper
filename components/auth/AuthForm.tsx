@@ -115,15 +115,15 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   // ---- MFA challenge screen ----
   if (mfaRequired) {
     return (
-      <div className="w-full max-w-sm rounded-2xl border border-line bg-white/90 p-8 shadow-elev backdrop-blur-sm">
+      <div className="w-full max-w-sm rounded-2xl border border-line bg-slate-100/90 p-8 shadow-elev backdrop-blur-xl">
         <div className="mb-6 text-center">
-          <div className="text-2xl font-bold">Two-Factor Verification</div>
+          <div className="text-2xl font-bold text-slate-900">Two-Factor Verification</div>
           <p className="mt-1 text-sm text-slate-500">
             Enter the 6-digit code from your authenticator app.
           </p>
         </div>
         {error && (
-          <div className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+          <div className="mb-4 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">
             {error}
           </div>
         )}
@@ -147,7 +147,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
           </button>
           <button
             type="button"
-            className="text-sm text-slate-500 hover:text-slate-700"
+            className="text-sm text-slate-500 hover:text-slate-300"
             onClick={cancelMfa}
           >
             Cancel
@@ -161,10 +161,11 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const strength = passwordStrength(password);
 
   return (
-    <div className="w-full max-w-sm rounded-2xl border border-line bg-white/90 p-8 shadow-elev backdrop-blur-sm">
+    <div className="w-full max-w-sm rounded-2xl border border-line bg-slate-100/90 p-8 shadow-elev backdrop-blur-xl">
       <div className="mb-6 text-center">
         <div className="text-2xl font-bold">
-          <span className="text-brand">Nexus</span> Ledger
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand to-brand-accent font-extrabold">Nexus</span>{" "}
+          <span className="text-slate-500">Ledger</span>
         </div>
         <p className="mt-1 text-sm text-slate-500">
           {isSignup ? "Create your account" : "Sign in to your account"}
@@ -172,12 +173,12 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
       </div>
 
       {error && (
-        <div className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+        <div className="mb-4 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">
           {error}
         </div>
       )}
       {notice && (
-        <div className="mb-4 rounded-md bg-green-50 px-3 py-2 text-sm text-green-700">
+        <div className="mb-4 rounded-md bg-green-950/40 border border-green-800/60 px-3 py-2 text-sm text-green-200">
           {notice}
         </div>
       )}
@@ -217,7 +218,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
                     className="flex-1 rounded-full"
                     style={{
                       backgroundColor:
-                        i <= strength ? STRENGTH_COLORS[strength - 1] : "#e2e8f0",
+                        i <= strength ? STRENGTH_COLORS[strength - 1] : "#1f2635",
                     }}
                   />
                 ))}

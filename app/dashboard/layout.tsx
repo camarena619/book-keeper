@@ -38,13 +38,14 @@ export default async function DashboardLayout({
       <SessionTimeout />
 
       {/* Desktop sidebar — hidden on mobile */}
-      <aside className="hidden w-64 flex-col border-r border-line bg-white/70 backdrop-blur-xl md:flex">
+      <aside className="hidden w-64 flex-col border-r border-line/60 bg-slate-50/50 backdrop-blur-xl md:flex">
         <div className="flex items-center gap-2.5 px-5 py-5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand to-brand-accent text-sm font-bold text-white shadow-sm">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand to-brand-accent text-sm font-bold text-white shadow-sm shadow-brand/20">
             N
           </span>
           <span className="text-lg font-bold tracking-tight text-slate-900">
-            Nexus <span className="font-medium text-slate-400">Ledger</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand to-brand-accent">Nexus</span>{" "}
+            <span className="font-medium text-slate-500">Ledger</span>
           </span>
         </div>
         <OrgSwitcher orgs={orgs} activeId={activeOrg.id} />

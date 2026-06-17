@@ -77,23 +77,23 @@ export function SessionTimeout() {
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 px-4"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-xs px-4"
       role="alertdialog"
       aria-modal="true"
       aria-label="Session expiring"
     >
-      <div className="w-full max-w-sm rounded-lg bg-white p-6 text-center shadow-xl">
+      <div className="w-full max-w-sm rounded-xl border border-line bg-slate-900 p-6 text-center shadow-elev backdrop-blur-xl">
         <div
           className={cn(
             "mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full",
-            critical ? "bg-red-100" : "bg-amber-100",
+            critical ? "bg-red-950/40" : "bg-amber-950/40",
           )}
         >
           <AlertTriangle
-            className={cn("h-6 w-6", critical ? "text-danger" : "text-amber-600")}
+            className={cn("h-6 w-6", critical ? "text-danger" : "text-amber-500")}
           />
         </div>
-        <h3 className="text-lg font-semibold">Session expiring soon</h3>
+        <h3 className="text-lg font-semibold text-slate-900">Session expiring soon</h3>
         <p className="mt-2 text-sm text-slate-500">
           You&apos;ve been inactive. For your security you&apos;ll be signed out
           automatically. Any unsaved changes may be lost.

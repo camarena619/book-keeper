@@ -138,7 +138,7 @@ export function InvoicesView({
                     {canEdit &&
                       (inv.status === "sent" || inv.status === "overdue") && (
                         <button
-                          className="rounded px-2 py-1 text-xs font-medium text-success hover:bg-green-50"
+                          className="rounded px-2 py-1 text-xs font-medium text-success hover:bg-success/15"
                           onClick={() => changeStatus(inv.invoice_id, "paid")}
                           disabled={pending}
                         >
@@ -281,10 +281,10 @@ function InvoiceBuilder({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/40 px-4 py-8">
-      <div className="w-full max-w-2xl rounded-lg bg-white p-6 shadow-xl">
+      <div className="w-full max-w-2xl rounded-2xl border border-line bg-slate-100/90 p-6 shadow-elev backdrop-blur-xl">
         <h3 className="mb-4 text-lg font-semibold">New Invoice</h3>
         {serverError && (
-          <div className="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+          <div className="mb-3 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">
             {serverError}
           </div>
         )}
@@ -364,7 +364,7 @@ function InvoiceBuilder({
                   </div>
                   <button
                     type="button"
-                    className="self-start rounded p-2 text-red-500 hover:bg-red-50 disabled:opacity-30"
+                    className="self-start rounded p-2 text-red-500 hover:bg-danger/10 disabled:opacity-30"
                     onClick={() => remove(i)}
                     disabled={fields.length === 1}
                     aria-label="Remove line"

@@ -19,9 +19,9 @@ interface AuditEntry {
 
 const PAGE_SIZE = 25;
 const ACTION_BADGE: Record<string, string> = {
-  INSERT: "bg-green-100 text-green-700",
-  UPDATE: "bg-sky-100 text-sky-700",
-  DELETE: "bg-red-100 text-red-700",
+  INSERT: "badge-success",
+  UPDATE: "badge-info",
+  DELETE: "badge-danger",
 };
 
 export function AuditLogViewer({ canView }: { canView: boolean }) {
@@ -183,7 +183,7 @@ export function AuditLogViewer({ canView }: { canView: boolean }) {
                     </td>
                     <td className="py-2 font-mono text-xs">{l.table_name}</td>
                     <td className="py-2">
-                      <span className={`rounded-full px-2 py-0.5 text-xs ${ACTION_BADGE[l.action]}`}>
+                      <span className={`badge ${ACTION_BADGE[l.action]}`}>
                         {l.action}
                       </span>
                     </td>

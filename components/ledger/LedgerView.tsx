@@ -30,11 +30,11 @@ export interface JournalEntryWithLines {
 }
 
 const TYPE_BADGE: Record<AccountType, string> = {
-  asset: "bg-sky-100 text-sky-700",
-  liability: "bg-amber-100 text-amber-700",
-  equity: "bg-violet-100 text-violet-700",
-  revenue: "bg-green-100 text-green-700",
-  expense: "bg-red-100 text-red-700",
+  asset: "badge-info",
+  liability: "badge-warning",
+  equity: "badge-brand",
+  revenue: "badge-success",
+  expense: "badge-danger",
 };
 
 const TABS = [
@@ -116,7 +116,7 @@ export function LedgerView({
                   <td className="py-2 font-mono font-semibold">{a.code}</td>
                   <td className="py-2">{a.name}</td>
                   <td className="py-2">
-                    <span className={cn("rounded-full px-2 py-0.5 text-xs capitalize", TYPE_BADGE[a.type])}>
+                    <span className={cn("badge capitalize", TYPE_BADGE[a.type])}>
                       {a.type}
                     </span>
                   </td>
@@ -215,8 +215,8 @@ export function LedgerView({
               <h2 className="text-lg font-semibold">Balance Sheet</h2>
               <span
                 className={cn(
-                  "rounded-full px-2 py-0.5 text-xs",
-                  balanced ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700",
+                  "badge",
+                  balanced ? "badge-success" : "badge-danger",
                 )}
               >
                 {balanced ? "✓ Balanced" : "⚠ Out of balance"}

@@ -41,11 +41,11 @@ export interface ClientOption {
 }
 
 const STATUS_BADGE: Record<string, string> = {
-  draft: "bg-slate-100 text-slate-600",
-  sent: "bg-sky-100 text-sky-700",
-  paid: "bg-green-100 text-green-700",
-  overdue: "bg-red-100 text-red-700",
-  cancelled: "bg-slate-200 text-slate-500",
+  draft: "badge-slate",
+  sent: "badge-info",
+  paid: "badge-success",
+  overdue: "badge-danger",
+  cancelled: "badge-slate",
 };
 
 export function InvoicesView({
@@ -117,8 +117,8 @@ export function InvoicesView({
                 <td className="py-2">
                   <span
                     className={cn(
-                      "rounded-full px-2 py-0.5 text-xs capitalize",
-                      STATUS_BADGE[inv.status] ?? "bg-slate-100",
+                      "badge capitalize",
+                      STATUS_BADGE[inv.status] ?? "badge-slate",
                     )}
                   >
                     {inv.status}

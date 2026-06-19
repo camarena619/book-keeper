@@ -188,11 +188,11 @@ export function TaxFormsView({
                     <td className="font-mono">{formatCurrency(c.total_paid_cents)}</td>
                     <td>
                       {reportable ? (
-                        <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-700">
+                        <span className="badge badge-success">
                           Reportable
                         </span>
                       ) : (
-                        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-500">
+                        <span className="badge badge-slate">
                           Under {formatCurrency(THRESHOLD_CENTS)}
                         </span>
                       )}

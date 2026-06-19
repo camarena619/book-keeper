@@ -147,16 +147,16 @@ export function RecurringInvoicesView({
                   <td className="font-mono">{formatCurrency(r.grand_total_cents)}</td>
                   <td>
                     <span className={cn(
-                      "rounded-full px-2 py-0.5 text-xs",
-                      r.auto_send ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-600",
+                      "badge",
+                      r.auto_send ? "badge-success" : "badge-slate",
                     )}>
                       {r.auto_send ? "Send" : "Draft"}
                     </span>
                   </td>
                   <td>
                     <span className={cn(
-                      "rounded-full px-2 py-0.5 text-xs",
-                      r.status === "active" ? "bg-sky-100 text-sky-700" : "bg-amber-100 text-amber-700",
+                      "badge",
+                      r.status === "active" ? "badge-info" : "badge-warning",
                     )}>
                       {r.status}
                     </span>

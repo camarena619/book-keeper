@@ -21,6 +21,7 @@
   --canvas: #f8fafc;
   --surface: #ffffff;
   --line: rgba(0, 0, 0, 0.08);
+  --sidebar-bg: rgba(248, 250, 252, 0.6);
 
   /* Semantic alert/badge tokens — adapt to theme so messages read correctly. */
   --danger-bg: #fef2f2;  --danger-border: #fecaca;  --danger-text: #b91c1c;
@@ -49,6 +50,7 @@
   --canvas: #0B0F19;
   --surface: rgba(22, 27, 38, 0.7);
   --line: rgba(255, 255, 255, 0.08);
+  --sidebar-bg: rgba(14, 19, 32, 0.6);
 
   --danger-bg: rgba(127, 29, 29, 0.28);  --danger-border: rgba(153, 27, 27, 0.55);  --danger-text: #fca5a5;
   --success-bg: rgba(20, 83, 45, 0.28);  --success-border: rgba(22, 101, 52, 0.55); --success-text: #86efac;
@@ -139,5 +141,38 @@
     background: var(--info-bg);
     border-color: var(--info-border);
     color: var(--info-text);
+  }
+  .badge-success {
+    background-color: var(--success-bg);
+    border-color: var(--success-border);
+    color: var(--success-text);
+    @apply border;
+  }
+  .badge-danger {
+    background-color: var(--danger-bg);
+    border-color: var(--danger-border);
+    color: var(--danger-text);
+    @apply border;
+  }
+  .badge-warning {
+    background-color: var(--warning-bg);
+    border-color: var(--warning-border);
+    color: var(--warning-text);
+    @apply border;
+  }
+  .badge-info {
+    background-color: var(--info-bg);
+    border-color: var(--info-border);
+    color: var(--info-text);
+    @apply border;
+  }
+  .badge-slate {
+    background-color: var(--slate-100);
+    border-color: var(--slate-200);
+    color: var(--slate-600);
+    @apply border;
+  }
+  .badge-brand {
+    @apply bg-brand-soft text-brand border border-brand/20 dark:bg-brand/15 dark:text-brand-accent dark:border-brand/30;
   }
 }

@@ -150,7 +150,7 @@ export function ActiveSessions() {
                   <div className="text-sm font-medium">
                     {info.browser} on {info.os}
                     {s.is_current && (
-                      <span className="ml-2 rounded-full bg-success/15 text-success border border-success/30 px-2 py-0.5 text-xs">
+                      <span className="ml-2 badge badge-success">
                         This device
                       </span>
                     )}

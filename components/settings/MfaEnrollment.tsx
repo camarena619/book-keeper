@@ -117,8 +117,8 @@ export function MfaEnrollment({ userEmail }: { userEmail: string }) {
       </div>
 
       <span
-        className={`mb-4 inline-block rounded-full px-2.5 py-1 text-xs font-medium border ${
-          aal === "aal2" ? "bg-success/15 text-success border-success/30" : "bg-slate-200 text-slate-400 border-line"
+        className={`mb-4 badge ${
+          aal === "aal2" ? "badge-success" : "badge-slate"
         }`}
       >
         {aal === "aal2" ? "● MFA active (AAL2)" : "○ MFA not configured"}
@@ -213,9 +213,9 @@ export function MfaEnrollment({ userEmail }: { userEmail: string }) {
 
       {step === "complete" && (
         <div className="flex flex-col items-start gap-3">
-          <div className="rounded-full bg-green-100 px-2.5 py-1 text-xs font-medium text-green-700">
+          <span className="badge badge-success">
             ✓ Two-factor authentication enabled
-          </div>
+          </span>
           <p className="text-sm text-slate-600">
             You&rsquo;ll be asked for a code from your authenticator app on future logins.
           </p>

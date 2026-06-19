@@ -38,7 +38,7 @@ export default async function DashboardLayout({
       <SessionTimeout />
 
       {/* Desktop sidebar — hidden on mobile */}
-      <aside className="hidden w-64 flex-col border-r border-line/60 bg-slate-50/50 backdrop-blur-xl md:flex">
+      <aside className="hidden w-64 flex-col border-r border-line bg-sidebar backdrop-blur-xl md:flex">
         <div className="flex items-center gap-2.5 px-5 py-5">
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand to-brand-accent text-sm font-bold text-white shadow-sm shadow-brand/20">
             N

@@ -4,11 +4,11 @@ import { getActiveOrg } from "@/lib/org";
 import { formatCurrency, formatDate, cn } from "@/lib/utils";
 
 const STATUS_STYLES: Record<string, string> = {
-  paid: "bg-green-50 text-success ring-1 ring-green-100",
-  sent: "bg-brand-soft text-brand ring-1 ring-blue-100",
-  overdue: "bg-red-50 text-danger ring-1 ring-red-100",
-  draft: "bg-slate-100 text-slate-500",
-  cancelled: "bg-slate-100 text-slate-400",
+  paid: "badge-success",
+  sent: "badge-info",
+  overdue: "badge-danger",
+  draft: "badge-slate",
+  cancelled: "badge-slate",
 };
 
 interface InvoiceRow {
@@ -133,8 +133,8 @@ export default async function DashboardPage() {
                     <td className="py-2">
                       <span
                         className={cn(
-                          "rounded-full px-2.5 py-0.5 text-xs font-medium capitalize",
-                          STATUS_STYLES[inv.status] ?? "bg-slate-100 text-slate-500",
+                          "badge capitalize",
+                          STATUS_STYLES[inv.status] ?? "badge-slate",
                         )}
                       >
                         {inv.status}

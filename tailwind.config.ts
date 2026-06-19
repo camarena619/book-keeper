@@ -22,6 +22,7 @@ const config: Config = {
         surface: "var(--surface)",
         canvas: "var(--canvas)",
         line: "var(--line)",
+        sidebar: "var(--sidebar-bg)",
         
         // Swapped slate shades to automatically invert dark/light text and backgrounds
         slate: {

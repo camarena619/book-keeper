@@ -280,8 +280,8 @@ function InvoiceBuilder({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/40 px-4 py-8">
-      <div className="w-full max-w-2xl rounded-2xl border border-line bg-surface p-6 shadow-elev backdrop-blur-xl">
+    <div className="fixed inset-0 z-50 flex justify-center overflow-y-auto bg-black/40 px-4 py-8">
+      <div className="my-auto w-full max-w-2xl rounded-2xl border border-line bg-surface p-6 shadow-elev backdrop-blur-xl">
         <h3 className="mb-4 text-lg font-semibold">New Invoice</h3>
         {serverError && (
           <div className="mb-3 alert alert-danger">

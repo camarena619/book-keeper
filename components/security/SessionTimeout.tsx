@@ -77,12 +77,12 @@ export function SessionTimeout() {
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-xs px-4"
+      className="fixed inset-0 z-[60] flex justify-center overflow-y-auto bg-black/50 backdrop-blur-xs px-4 py-8"
       role="alertdialog"
       aria-modal="true"
       aria-label="Session expiring"
     >
-      <div className="w-full max-w-sm rounded-xl border border-line bg-surface p-6 text-center shadow-elev backdrop-blur-xl">
+      <div className="my-auto w-full max-w-sm rounded-xl border border-line bg-surface p-6 text-center shadow-elev backdrop-blur-xl">
         <div
           className={cn(
             "mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full",

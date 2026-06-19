@@ -185,8 +185,8 @@ function ContactModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-md rounded-2xl border border-line bg-surface p-6 shadow-elev backdrop-blur-xl">
+    <div className="fixed inset-0 z-50 flex justify-center overflow-y-auto bg-black/40 px-4 py-8">
+      <div className="my-auto w-full max-w-md rounded-2xl border border-line bg-surface p-6 shadow-elev backdrop-blur-xl">
         <h3 className="mb-4 text-lg font-semibold">
           {contact ? "Edit Contact" : "Add Contact"}
         </h3>
@@ -265,8 +265,8 @@ function DeleteConfirm({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-sm rounded-2xl border border-line bg-surface p-6 shadow-elev backdrop-blur-xl">
+    <div className="fixed inset-0 z-50 flex justify-center overflow-y-auto bg-black/40 px-4 py-8">
+      <div className="my-auto w-full max-w-sm rounded-2xl border border-line bg-surface p-6 shadow-elev backdrop-blur-xl">
         <h3 className="text-lg font-semibold">Delete contact?</h3>
         <p className="mt-2 text-sm text-slate-500">
           This will permanently remove <strong>{contact.name}</strong>.

@@ -30,8 +30,8 @@ export interface ClientOption {
 }
 
 const STATUS_BADGE: Record<string, string> = {
-  draft: "bg-slate-200/50 text-slate-400 border border-line",
-  sent: "bg-sky-950/40 text-sky-400 border border-sky-800/30",
+  draft: "bg-slate-100 text-slate-500 border border-line",
+  sent: "bg-brand/15 text-brand border border-brand/30",
   accepted: "bg-success/15 text-success border border-success/30",
   declined: "bg-danger/15 text-danger border border-danger/30",
   converted: "bg-brand/15 text-brand-accent border border-brand/30",
@@ -88,7 +88,7 @@ export function EstimatesView({
       </header>
 
       {error && (
-        <div className="rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">{error}</div>
+        <div className="alert alert-danger">{error}</div>
       )}
 
       <div className="card overflow-x-auto">
@@ -216,10 +216,10 @@ function EstimateBuilder({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/40 px-4 py-8">
-      <div className="w-full max-w-2xl rounded-2xl border border-line bg-slate-100/90 p-6 shadow-elev backdrop-blur-xl">
+      <div className="w-full max-w-2xl rounded-2xl border border-line bg-surface p-6 shadow-elev backdrop-blur-xl">
         <h3 className="mb-4 text-lg font-semibold">New Estimate</h3>
         {serverError && (
-          <div className="mb-3 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">{serverError}</div>
+          <div className="mb-3 alert alert-danger">{serverError}</div>
         )}
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">

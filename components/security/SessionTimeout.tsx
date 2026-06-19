@@ -82,11 +82,11 @@ export function SessionTimeout() {
       aria-modal="true"
       aria-label="Session expiring"
     >
-      <div className="w-full max-w-sm rounded-xl border border-line bg-slate-900 p-6 text-center shadow-elev backdrop-blur-xl">
+      <div className="w-full max-w-sm rounded-xl border border-line bg-surface p-6 text-center shadow-elev backdrop-blur-xl">
         <div
           className={cn(
             "mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full",
-            critical ? "bg-red-950/40" : "bg-amber-950/40",
+            critical ? "bg-danger/10" : "bg-warning/10",
           )}
         >
           <AlertTriangle

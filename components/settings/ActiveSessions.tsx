@@ -127,7 +127,7 @@ export function ActiveSessions() {
       </div>
 
       {error && (
-        <div className="mb-3 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">{error}</div>
+        <div className="mb-3 alert alert-danger">{error}</div>
       )}
 
       {loading ? (

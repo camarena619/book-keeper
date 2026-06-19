@@ -75,18 +75,18 @@ export function SettingsView({
       </div>
 
       {!isOwner && (
-        <div className="rounded-md bg-amber-950/40 border border-amber-800/60 px-3 py-2 text-sm text-amber-200">
+        <div className="alert alert-warning">
           Only the organization owner can edit these settings. Fields are
           read-only.
         </div>
       )}
       {serverError && (
-        <div className="rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">
+        <div className="alert alert-danger">
           {serverError}
         </div>
       )}
       {saved && (
-        <div className="rounded-md bg-green-950/40 border border-green-800/60 px-3 py-2 text-sm text-green-200">
+        <div className="alert alert-success">
           Settings saved.
         </div>
       )}

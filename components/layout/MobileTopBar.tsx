@@ -31,7 +31,7 @@ export function MobileTopBar({
 
   return (
     <>
-      <div className="sticky top-0 z-30 flex items-center justify-between border-b border-line/50 bg-slate-900/80 backdrop-blur-md px-4 py-3 md:hidden">
+      <div className="sticky top-0 z-30 flex items-center justify-between border-b border-line bg-surface backdrop-blur-md px-4 py-3 md:hidden">
         <div className="text-lg font-bold tracking-tight text-slate-900">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand to-brand-accent">Nexus</span>{" "}
           <span className="font-medium text-slate-500">Ledger</span>
@@ -39,7 +39,7 @@ export function MobileTopBar({
         <button
           onClick={() => setOpen(true)}
           aria-label="Open menu"
-          className="rounded-md p-1.5 text-slate-200 hover:bg-slate-800"
+          className="rounded-md p-1.5 text-slate-600 hover:bg-slate-100"
         >
           <Menu className="h-6 w-6" />
         </button>
@@ -52,7 +52,7 @@ export function MobileTopBar({
             onClick={() => setOpen(false)}
             aria-hidden
           />
-          <aside className="absolute left-0 top-0 flex h-full w-64 flex-col bg-slate-50/95 border-r border-line/50 shadow-elev backdrop-blur-xl">
+          <aside className="absolute left-0 top-0 flex h-full w-64 flex-col bg-surface border-r border-line shadow-elev backdrop-blur-xl">
             <div className="flex items-center justify-between px-5 py-4">
               <div className="text-xl font-bold tracking-tight text-slate-900">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand to-brand-accent">Nexus</span>{" "}
@@ -61,7 +61,7 @@ export function MobileTopBar({
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Close menu"
-                className="rounded-md p-1.5 text-slate-200 hover:bg-slate-800"
+                className="rounded-md p-1.5 text-slate-600 hover:bg-slate-100"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -70,7 +70,7 @@ export function MobileTopBar({
             <div className="mt-4 flex-1 overflow-y-auto">
               <SidebarNav />
             </div>
-            <div className="border-t border-line/50 p-3">
+            <div className="border-t border-line p-3">
               <div className="mb-2 px-3 text-xs text-slate-400">{userEmail}</div>
               <SignOutButton />
             </div>

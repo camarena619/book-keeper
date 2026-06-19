@@ -290,12 +290,12 @@ function RecurringBuilder({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/40 px-4 py-8">
-      <div className="w-full max-w-2xl rounded-2xl border border-line bg-slate-100/90 p-6 shadow-elev backdrop-blur-xl">
+      <div className="w-full max-w-2xl rounded-2xl border border-line bg-surface p-6 shadow-elev backdrop-blur-xl">
         <h3 className="mb-4 text-lg font-semibold">
           {existing ? "Edit recurring schedule" : "New recurring schedule"}
         </h3>
         {serverError && (
-          <div className="mb-3 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">
+          <div className="mb-3 alert alert-danger">
             {serverError}
           </div>
         )}

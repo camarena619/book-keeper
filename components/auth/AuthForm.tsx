@@ -115,7 +115,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   // ---- MFA challenge screen ----
   if (mfaRequired) {
     return (
-      <div className="w-full max-w-sm rounded-2xl border border-line bg-slate-100/90 p-8 shadow-elev backdrop-blur-xl">
+      <div className="w-full max-w-sm rounded-2xl border border-line bg-surface p-8 shadow-elev backdrop-blur-xl">
         <div className="mb-6 text-center">
           <div className="text-2xl font-bold text-slate-900">Two-Factor Verification</div>
           <p className="mt-1 text-sm text-slate-500">
@@ -123,7 +123,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
           </p>
         </div>
         {error && (
-          <div className="mb-4 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">
+          <div className="mb-4 alert alert-danger">
             {error}
           </div>
         )}
@@ -161,7 +161,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const strength = passwordStrength(password);
 
   return (
-    <div className="w-full max-w-sm rounded-2xl border border-line bg-slate-100/90 p-8 shadow-elev backdrop-blur-xl">
+    <div className="w-full max-w-sm rounded-2xl border border-line bg-surface p-8 shadow-elev backdrop-blur-xl">
       <div className="mb-6 text-center">
         <div className="text-2xl font-bold">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand to-brand-accent font-extrabold">Nexus</span>{" "}
@@ -173,12 +173,12 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
       </div>
 
       {error && (
-        <div className="mb-4 rounded-md bg-red-950/40 border border-red-800/60 px-3 py-2 text-sm text-red-200">
+        <div className="mb-4 alert alert-danger">
           {error}
         </div>
       )}
       {notice && (
-        <div className="mb-4 rounded-md bg-green-950/40 border border-green-800/60 px-3 py-2 text-sm text-green-200">
+        <div className="mb-4 alert alert-success">
           {notice}
         </div>
       )}

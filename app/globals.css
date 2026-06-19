@@ -21,7 +21,13 @@
   --canvas: #f8fafc;
   --surface: #ffffff;
   --line: rgba(0, 0, 0, 0.08);
-  
+
+  /* Semantic alert/badge tokens — adapt to theme so messages read correctly. */
+  --danger-bg: #fef2f2;  --danger-border: #fecaca;  --danger-text: #b91c1c;
+  --success-bg: #f0fdf4; --success-border: #bbf7d0; --success-text: #15803d;
+  --warning-bg: #fffbeb; --warning-border: #fde68a; --warning-text: #b45309;
+  --info-bg: #eff6ff;    --info-border: #bfdbfe;    --info-text: #1d4ed8;
+
   --bg-wash: radial-gradient(55rem 55rem at 100% -10%, rgba(99, 102, 241, 0.05), transparent 60%),
              radial-gradient(45rem 45rem at -10% 110%, rgba(139, 92, 246, 0.03), transparent 60%);
 }
@@ -43,7 +49,12 @@
   --canvas: #0B0F19;
   --surface: rgba(22, 27, 38, 0.7);
   --line: rgba(255, 255, 255, 0.08);
-  
+
+  --danger-bg: rgba(127, 29, 29, 0.28);  --danger-border: rgba(153, 27, 27, 0.55);  --danger-text: #fca5a5;
+  --success-bg: rgba(20, 83, 45, 0.28);  --success-border: rgba(22, 101, 52, 0.55); --success-text: #86efac;
+  --warning-bg: rgba(120, 53, 15, 0.28); --warning-border: rgba(146, 64, 14, 0.55);  --warning-text: #fcd34d;
+  --info-bg: rgba(30, 58, 138, 0.28);    --info-border: rgba(30, 64, 175, 0.55);     --info-text: #93c5fd;
+
   --bg-wash: radial-gradient(55rem 55rem at 100% -10%, rgba(99, 102, 241, 0.14), transparent 60%),
              radial-gradient(45rem 45rem at -10% 110%, rgba(139, 92, 246, 0.10), transparent 60%);
 }
@@ -86,15 +97,17 @@
     @apply btn bg-gradient-to-r from-brand to-brand-accent text-white shadow-sm hover:shadow-glow-brand hover:brightness-110;
   }
   .btn-secondary {
-    @apply btn border border-slate-200 bg-slate-100 text-slate-700 hover:border-slate-300 hover:bg-slate-200;
+    @apply btn border border-slate-300 bg-surface text-slate-700 shadow-xs hover:border-slate-400 hover:bg-slate-100;
   }
   .card {
-    @apply rounded-2xl border border-line bg-surface p-5 shadow-card backdrop-blur-xl transition-shadow duration-200 hover:shadow-glow;
+    @apply rounded-2xl border border-line bg-surface p-5 shadow-card transition-shadow duration-200;
   }
+  /* Fields sit "inset" against surfaces (cards/modals) with a clear border so
+     they're always visibly distinct in both light and dark themes. */
   .input {
-    @apply w-full rounded-lg border border-slate-200 bg-slate-100 px-3 py-2 text-sm text-slate-900 shadow-xs outline-none transition
+    @apply w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900 shadow-xs outline-none transition
       placeholder:text-slate-400
-      hover:border-slate-300
+      hover:border-slate-400
       focus:border-brand focus:ring-4 focus:ring-brand/10;
   }
   .label {
@@ -102,5 +115,29 @@
   }
   .badge {
     @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium;
+  }
+  /* Theme-aware inline messages — readable in both light and dark. */
+  .alert {
+    @apply rounded-md border px-3 py-2 text-sm;
+  }
+  .alert-danger {
+    background: var(--danger-bg);
+    border-color: var(--danger-border);
+    color: var(--danger-text);
+  }
+  .alert-success {
+    background: var(--success-bg);
+    border-color: var(--success-border);
+    color: var(--success-text);
+  }
+  .alert-warning {
+    background: var(--warning-bg);
+    border-color: var(--warning-border);
+    color: var(--warning-text);
+  }
+  .alert-info {
+    background: var(--info-bg);
+    border-color: var(--info-border);
+    color: var(--info-text);
   }
 }

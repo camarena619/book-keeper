@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Portal } from "@/components/layout/Portal";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { useForm } from "react-hook-form";
@@ -412,12 +413,14 @@ function Modal({
   onClose: () => void;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex justify-center overflow-y-auto bg-black/40 px-4 py-8">
-      <div className="my-auto w-full max-w-lg rounded-2xl border border-line bg-surface p-6 shadow-elev backdrop-blur-xl">
-        <h3 className="mb-4 text-lg font-semibold">{title}</h3>
-        {children}
+    <Portal>
+      <div className="fixed inset-0 z-50 flex justify-center overflow-y-auto bg-black/40 px-4 py-8">
+        <div className="my-auto w-full max-w-lg rounded-2xl border border-line bg-surface p-6 shadow-elev backdrop-blur-xl">
+          <h3 className="mb-4 text-lg font-semibold">{title}</h3>
+          {children}
+        </div>
       </div>
-    </div>
+    </Portal>
   );
 }
 

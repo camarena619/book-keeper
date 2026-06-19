@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Portal } from "@/components/layout/Portal";
 import { useRouter } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -177,13 +178,15 @@ export function EmployeesView({
       </p>
 
       {(adding || editing) && (
-        <EmployeeDialog
-          existing={editing}
-          onClose={() => {
-            setAdding(false);
-            setEditing(null);
-          }}
-        />
+        <Portal>
+          <EmployeeDialog
+            existing={editing}
+            onClose={() => {
+              setAdding(false);
+              setEditing(null);
+            }}
+          />
+        </Portal>
       )}
     </div>
   );

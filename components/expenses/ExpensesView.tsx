@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { Portal } from "@/components/layout/Portal";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -142,10 +143,12 @@ export function ExpensesView({
       </div>
 
       {showForm && (
-        <ExpenseModal
-          contractors={contractors}
-          onClose={() => setShowForm(false)}
-        />
+        <Portal>
+          <ExpenseModal
+            contractors={contractors}
+            onClose={() => setShowForm(false)}
+          />
+        </Portal>
       )}
     </div>
   );

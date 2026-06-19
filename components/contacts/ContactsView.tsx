@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Portal } from "@/components/layout/Portal";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -133,16 +134,20 @@ export function ContactsView({
       </div>
 
       {showForm && (
-        <ContactModal
-          contact={editing}
-          onClose={() => setShowForm(false)}
-        />
+        <Portal>
+          <ContactModal
+            contact={editing}
+            onClose={() => setShowForm(false)}
+          />
+        </Portal>
       )}
       {deleting && (
-        <DeleteConfirm
-          contact={deleting}
-          onClose={() => setDeleting(null)}
-        />
+        <Portal>
+          <DeleteConfirm
+            contact={deleting}
+            onClose={() => setDeleting(null)}
+          />
+        </Portal>
       )}
     </div>
   );

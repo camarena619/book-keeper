@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { Portal } from "@/components/layout/Portal";
 import { AlertTriangle } from "lucide-react";
 import { signOut } from "@/app/dashboard/actions";
 import { cn } from "@/lib/utils";
@@ -76,13 +77,14 @@ export function SessionTimeout() {
   const critical = secondsRemaining <= 60;
 
   return (
-    <div
-      className="fixed inset-0 z-[60] flex justify-center overflow-y-auto bg-black/50 backdrop-blur-xs px-4 py-8"
-      role="alertdialog"
-      aria-modal="true"
-      aria-label="Session expiring"
-    >
-      <div className="my-auto w-full max-w-sm rounded-xl border border-line bg-surface p-6 text-center shadow-elev backdrop-blur-xl">
+    <Portal>
+      <div
+        className="fixed inset-0 z-[60] flex justify-center overflow-y-auto bg-black/50 backdrop-blur-xs px-4 py-8"
+        role="alertdialog"
+        aria-modal="true"
+        aria-label="Session expiring"
+      >
+        <div className="my-auto w-full max-w-sm rounded-xl border border-line bg-surface p-6 text-center shadow-elev backdrop-blur-xl">
         <div
           className={cn(
             "mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full",
@@ -119,5 +121,6 @@ export function SessionTimeout() {
         </div>
       </div>
     </div>
+    </Portal>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
+import { Portal } from "@/components/layout/Portal";
 import { cn, formatCurrency, formatDate } from "@/lib/utils";
 import { createAccount, type CreateAccountState } from "@/app/dashboard/ledger/actions";
 
@@ -240,7 +241,11 @@ export function LedgerView({
         </div>
       )}
 
-      {showAdd && <AddAccountModal onClose={() => setShowAdd(false)} />}
+      {showAdd && (
+        <Portal>
+          <AddAccountModal onClose={() => setShowAdd(false)} />
+        </Portal>
+      )}
     </div>
   );
 }

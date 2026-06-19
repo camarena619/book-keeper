@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { Portal } from "@/components/layout/Portal";
 import { useForm, useFieldArray, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -157,7 +158,9 @@ export function EstimatesView({
       </div>
 
       {showForm && (
-        <EstimateBuilder clients={clients} nextNumber={nextNumber} onClose={() => setShowForm(false)} />
+        <Portal>
+          <EstimateBuilder clients={clients} nextNumber={nextNumber} onClose={() => setShowForm(false)} />
+        </Portal>
       )}
     </div>
   );

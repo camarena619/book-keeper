@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Portal } from "@/components/layout/Portal";
 import { useRouter } from "next/navigation";
 import { useForm, useFieldArray, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -203,14 +204,16 @@ export function RecurringInvoicesView({
       </div>
 
       {(creating || editing) && (
-        <RecurringBuilder
-          clients={clients}
-          existing={editing}
-          onClose={() => {
-            setCreating(false);
-            setEditing(null);
-          }}
-        />
+        <Portal>
+          <RecurringBuilder
+            clients={clients}
+            existing={editing}
+            onClose={() => {
+              setCreating(false);
+              setEditing(null);
+            }}
+          />
+        </Portal>
       )}
     </div>
   );

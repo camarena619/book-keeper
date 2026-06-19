@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { Portal } from "@/components/layout/Portal";
 import { createClient as createPlainClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { Lock, AlertTriangle } from "lucide-react";
@@ -134,13 +135,14 @@ export function ReAuthModal({ isOpen, actionDescription, onResult }: ReAuthModal
   if (!isOpen) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-[60] flex justify-center overflow-y-auto bg-black/40 px-4 py-8"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Re-authentication required"
-    >
-      <div className="my-auto w-full max-w-md rounded-2xl border border-line bg-surface p-6 shadow-elev backdrop-blur-xl">
+    <Portal>
+      <div
+        className="fixed inset-0 z-[60] flex justify-center overflow-y-auto bg-black/40 px-4 py-8"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Re-authentication required"
+      >
+        <div className="my-auto w-full max-w-md rounded-2xl border border-line bg-surface p-6 shadow-elev backdrop-blur-xl">
         <div className="mb-4 text-center">
           <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-brand/10">
             <Lock className="h-6 w-6 text-brand" />
@@ -219,6 +221,7 @@ export function ReAuthModal({ isOpen, actionDescription, onResult }: ReAuthModal
         </p>
       </div>
     </div>
+    </Portal>
   );
 }
 

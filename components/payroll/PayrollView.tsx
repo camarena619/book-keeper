@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { Portal } from "@/components/layout/Portal";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Plus, Trash2, CheckCircle2 } from "lucide-react";
@@ -187,7 +188,9 @@ export function PayrollView({
       </div>
 
       {creating && (
-        <NewPayRunDialog employees={employees} onClose={() => setCreating(false)} />
+        <Portal>
+          <NewPayRunDialog employees={employees} onClose={() => setCreating(false)} />
+        </Portal>
       )}
     </div>
   );
